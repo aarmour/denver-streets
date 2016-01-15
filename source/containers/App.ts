@@ -1,14 +1,15 @@
-import { Component, Inject, InjectMetadata } from 'angular2/core';
+import { Component, Inject } from 'angular2/core';
 
 @Component({
   selector: 'app',
   template: '<h1>Denver Streets</h1>'
 })
-@Reflect.metadata('parameters', [[new InjectMetadata('ngRedux')]])
 export default class AppContainer {
-  constructor(ngRedux) {
+  constructor(@Inject('ngRedux') ngRedux) {
     this.unsubscribe = ngRedux.connect(this.mapStateToThis/*, this.mapDispatchToThis */)(this);
   }
+
+  unsubscribe() {}
 
   ngOnInit() {}
 

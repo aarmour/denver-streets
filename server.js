@@ -4,12 +4,13 @@ const config = require('./webpack.config');
 
 new WebpackDevServer(webpack(config), {
   publicPath: config.output.publicPath,
+  historyApiFallback: true,
   hot: true,
   stats: {
     colors: true
   }
 })
-  .listen(3000, 'localhost', err => {
+  .listen(3000, 'localhost', function (err) {
     if (err) {
       console.log(err);
     }
