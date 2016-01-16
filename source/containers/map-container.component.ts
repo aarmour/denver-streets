@@ -1,4 +1,5 @@
 import { Component, Inject, ElementRef } from 'angular2/core';
+import MapMenu from '../components/map-menu.component';
 
 const ELEMENT_ID = 'map';
 const MAP_CENTER = [-104.9, 39.7];
@@ -6,6 +7,7 @@ const MAP_BOUNDS = [[-105.1, 39.6], [-104.7, 39.8]];
 
 @Component({
   selector: 'map',
+  directives: [MapMenu],
   template: `
     <style>
       .map {
@@ -13,6 +15,7 @@ const MAP_BOUNDS = [[-105.1, 39.6], [-104.7, 39.8]];
         height: 100%;
       }
     </style>
+    <map-menu></map-menu>
     <div id="${ELEMENT_ID}" class="map"></div>
   `
 })
