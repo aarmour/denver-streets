@@ -24,14 +24,7 @@ export default class Map {
     @Inject('MapServiceGL') private _mapService: any) {
 
     this.unsubscribe = ngRedux.connect()(this);
-    this.init();
-  }
-
-  init() {
-    const mapService = this._mapService;
-
-    // TODO: inject token
-    mapService.accessToken = 'pk.eyJ1IjoiYWFybW91ciIsImEiOiJjaWlucjJxNDkwMWVwdmptNWw4Z20xNXpwIn0.SwlGS26RAgqeTK1kD-Xclw';
+    this._mapService.accessToken = 'pk.eyJ1IjoiYWFybW91ciIsImEiOiJjaWlucjJxNDkwMWVwdmptNWw4Z20xNXpwIn0.SwlGS26RAgqeTK1kD-Xclw';
   }
 
   unsubscribe() {}
