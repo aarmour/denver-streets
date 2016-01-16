@@ -28,8 +28,8 @@ const thunk = require('redux-thunk');
 
 import { bootstrap } from 'angular2/platform/browser';
 import { rootReducer } from './reducers';
-import App from './containers/App';
-import { MAP_SERVICE_PROVIDERS } from './services/MapService';
+import App from './containers/app-container.component';
+import { MAP_SERVICE_PROVIDERS } from './services/map.service';
 
 // Bootstrap
 const createStoreWithMiddleware = applyMiddleware(thunk)(createStore);

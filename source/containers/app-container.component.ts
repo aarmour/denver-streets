@@ -1,5 +1,5 @@
 import { Component, Inject } from 'angular2/core';
-import Map from './Map';
+import Map from './map-container.component';
 
 @Component({
   selector: 'app',
