@@ -1,8 +1,12 @@
 import { Component, Inject } from 'angular2/core';
+import Map from './Map';
 
 @Component({
   selector: 'app',
-  template: '<h1>Denver Streets</h1>'
+  directives: [Map],
+  template: `
+    <map></map>
+  `
 })
 export default class AppContainer {
   constructor(@Inject('ngRedux') ngRedux) {
@@ -10,8 +14,6 @@ export default class AppContainer {
   }
 
   unsubscribe() {}
-
-  ngOnInit() {}
 
   ngOnDestroy() {
     this.unsubscribe();
