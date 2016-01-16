@@ -1,5 +1,9 @@
-import { Component, Inject, ElementRef } from 'angular2/core';
+import { Component, Inject, OnDestroy } from 'angular2/core';
+const { bindActionCreators } = require('redux');
 import { MapMenu } from '../components/map-menu';
+import SearchBar from '../components/search-bar.component';
+import GeocodeService from '../services/geocode.service';
+import * as SearchActions from '../actions/search.actions';
 
 const ELEMENT_ID = 'map';
 const MAP_CENTER = [-104.9, 39.7];
@@ -8,30 +12,62 @@ const MAP_PITCH = 60;
 
 @Component({
   selector: 'map',
-  directives: [MapMenu],
+  directives: [
+    MapMenu,
+    SearchBar
+  ],
   template: `
     <style>
       .map {
         width: 100%;
         height: 100%;
       }
+
+      .search-control {
+        position: absolute;
+        top: 10px;
+        left: 50%;
+        z-index: 1;
+
+      }
+
+      @media (min-width: 480px) {
+        .search-control {
+          width: 380px;
+          margin: 0 0 0 -190px;
+        }
+      }
+
+      @media (min-width: 768px) {
+        .search-control {
+          width: 500px;
+          margin: 0 0 0 -250px;
+        }
+      }
     </style>
     <map-menu (changeOptions)="handleChangeOptions($event)"></map-menu>
+    <div class="search-control">
+      <search-bar (search)="handleSearch($event)"></search-bar>
+    </div>
     <div id="${ELEMENT_ID}" class="map"></div>
   `
 })
-export default class Map {
+export default class Map implements OnDestroy {
+
   private _map: any;
+  private geocodeService: GeocodeService;
+  protected unsubscribe: Function;
+  protected search: Function;
 
   constructor(
     @Inject('ngRedux') ngRedux,
-    @Inject('MapServiceGL') private _mapService: any) {
+    @Inject('MapServiceGL') private _mapService: any,
+    geocodeService: GeocodeService) {
 
-    this.unsubscribe = ngRedux.connect()(this);
+    this.unsubscribe = ngRedux.connect(this.mapStateToThis, this.mapDispatchToThis)(this);
     this._mapService.accessToken = 'pk.eyJ1IjoiYWFybW91ciIsImEiOiJjaWlucjJxNDkwMWVwdmptNWw4Z20xNXpwIn0.SwlGS26RAgqeTK1kD-Xclw';
+    this.geocodeService = geocodeService;
   }
-
-  unsubscribe() {}
 
   ngOnInit() {
     const mapService = this._mapService;
@@ -65,5 +101,19 @@ export default class Map {
 
   handleChangeOptions(newOptions) {
     this.toggleTilt(newOptions.isTilted);
+  }
+
+  handleSearch(query: string) {
+    this.search(query, this.geocodeService);
+  }
+
+  mapStateToThis(state) {
+    return {
+      location: state.location
+    };
+  }
+
+  mapDispatchToThis(dispatch) {
+    return bindActionCreators(SearchActions, dispatch);
   }
 }

@@ -1,5 +1,6 @@
-export function rootReducer(state = {}, action) {
-  // For now, don’t handle any actions
-  // and just return the state given to us.
-  return state
-}
+const combineReducers = require('redux').combineReducers;
+import location from './location.reducer';
+
+export const rootReducer = combineReducers({
+  location
+});

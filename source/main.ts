@@ -27,12 +27,24 @@ const { provider } = require('ng2-redux');
 const thunk = require('redux-thunk');
 
 import { bootstrap } from 'angular2/platform/browser';
+import { provide } from 'angular2/core';
 import { rootReducer } from './reducers';
 import App from './containers/app-container.component';
+import { AppConfig, loadFromGlobal } from './services/app-config.service';
+
+// Providers
+import { HTTP_PROVIDERS } from 'angular2/http';
 import { MAP_SERVICE_PROVIDERS } from './services/map.service';
+import { GEOCODE_SERVICE_PROVIDERS } from './services/geocode.service';
 
 // Bootstrap
 const createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
 const store = createStoreWithMiddleware(rootReducer);
 
-bootstrap(App, [provider(store), MAP_SERVICE_PROVIDERS]);
+bootstrap(App, [
+  HTTP_PROVIDERS,
+  provide(AppConfig, { useValue: loadFromGlobal('Config') }),
+  provider(store),
+  MAP_SERVICE_PROVIDERS,
+  GEOCODE_SERVICE_PROVIDERS
+]);
