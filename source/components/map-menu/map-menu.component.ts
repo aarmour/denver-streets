@@ -29,6 +29,17 @@ import MapMenuSection from './map-menu-section.component';
         display: block;
       }
 
+      .menu > button {
+        width: auto;
+        height: auto;
+        padding: 5px;
+        font-size: 0.75em;
+      }
+
+      .menu.expanded > button:hover {
+        background: #fff;
+      }
+
       .toggle {
         border: 0;
       }
