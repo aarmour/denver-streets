@@ -2,6 +2,7 @@ import { Component, Inject, OnDestroy } from 'angular2/core';
 const { bindActionCreators } = require('redux');
 import { MapMenu } from '../components/map-menu';
 import SearchBar from '../components/search-bar.component';
+import { AppConfig } from '../services/app-config.service';
 import GeocodeService from '../services/geocode.service';
 import * as SearchActions from '../actions/search.actions';
 
@@ -54,27 +55,27 @@ const MAP_PITCH = 60;
 })
 export default class Map implements OnDestroy {
 
-  private _map: any;
+  private map: any;
   private geocodeService: GeocodeService;
   protected unsubscribe: Function;
   protected search: Function;
 
   constructor(
     @Inject('ngRedux') ngRedux,
-    @Inject('MapServiceGL') private _mapService: any,
-    geocodeService: GeocodeService) {
+    @Inject('MapServiceGL') private mapService: any,
+    private geocodeService: GeocodeService,
+    @Inject(AppConfig) appConfig) {
 
     this.unsubscribe = ngRedux.connect(this.mapStateToThis, this.mapDispatchToThis)(this);
-    this._mapService.accessToken = 'pk.eyJ1IjoiYWFybW91ciIsImEiOiJjaWlucjJxNDkwMWVwdmptNWw4Z20xNXpwIn0.SwlGS26RAgqeTK1kD-Xclw';
-    this.geocodeService = geocodeService;
+    this.mapService.accessToken = appConfig.mapbox.accessToken;
   }
 
   ngOnInit() {
-    const mapService = this._mapService;
+    const mapService = this.mapService;
 
     // TODO: fix. This is a hack to get the map to draw correctly.
     setTimeout(() => {
-      const map = this._map = new mapService.Map({
+      const map = this.map = new mapService.Map({
         container: ELEMENT_ID,
         style: 'mapbox://styles/mapbox/basic-v8',
         center: MAP_CENTER,
@@ -91,7 +92,7 @@ export default class Map implements OnDestroy {
   }
 
   toggleTilt(isTilted) {
-    const map = this._map;
+    const map = this.map;
     const cameraOptions = {
       pitch: isTilted ? MAP_PITCH : 0
     };
