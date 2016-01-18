@@ -2,6 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const CopyWebpackPlugin  = require('copy-webpack-plugin');
 const HtmlWebpackPlugin  = require('html-webpack-plugin');
+
 const ENV = process.env.ENV = process.env.NODE_ENV = 'development';
 
 module.exports = {
@@ -15,7 +16,10 @@ module.exports = {
   //   'webpack/hot/dev-server',
   //   './source/main.ts'
   // ],
-  entry: './source/main.ts',
+  entry: [
+    './source/vendor.js',
+    './source/main.ts'
+  ],
 
   output: {
     path: path.join(__dirname, 'dist'),
@@ -24,27 +28,20 @@ module.exports = {
   },
 
   resolve: {
-    extensions: ['','.ts','.js','.json','.css','.html']
+    extensions: ['', '.js', '.ts', '.json', '.css', '.html'],
+    alias: {
+      // Workaround for https://github.com/mapbox/mapbox-gl-js/issues/1649
+      'mapbox-gl': path.resolve('./node_modules/mapbox-gl/dist/mapbox-gl.js')
+    }
   },
 
   module: {
     loaders: [
-      {
-        test: /\.ts$/,
-        loader: 'ts-loader',
-        query: {
-          'ignoreDiagnostics': [
-            2403, // 2403 -> Subsequent variable declarations
-            2300, // 2300 -> Duplicate identifier
-            2374, // 2374 -> Duplicate number index signature
-            2375  // 2375 -> Duplicate string index signature
-          ]
-        },
-        exclude: [ /\.(spec|e2e)\.ts$/, /node_modules\/(?!(ng2-.+))/ ]
-      },
-      { test: /\.json$/,  loader: 'json-loader' },
-      { test: /\.css$/,   loader: 'raw-loader' },
-      { test: /\.html$/,  loader: 'raw-loader' }
+      { test: /\.ts$/, loader: 'ts' },
+      { test: /\.js$/, loader: 'babel', exclude: /node_modules/ },
+      { test: /\.json$/, loader: 'json' },
+      { test: /\.css$/, loader: 'raw' },
+      { test: /\.html$/, loader: 'raw' }
     ]
   },
 
@@ -53,21 +50,12 @@ module.exports = {
     // generating html
     // new HtmlWebpackPlugin({ template: './index.html', inject: false }),
     // replace
+    new webpack.NoErrorsPlugin(),
     new webpack.DefinePlugin({
       'process.env': {
         'ENV': JSON.stringify(ENV),
         'NODE_ENV': JSON.stringify(ENV)
       }
     })
-  ],
-
-  // Fix es6-shim
-  node: {
-    global: 'window',
-    progress: false,
-    crypto: 'empty',
-    module: false,
-    clearImmediate: false,
-    setImmediate: false
-  }
+  ]
 };

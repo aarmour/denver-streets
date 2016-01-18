@@ -1,5 +1,5 @@
 import { provide } from 'angular2/core';
-const mapboxgl = require('mapbox-gl/dist/mapbox-gl');
+const mapboxgl = require('mapbox-gl');
 
 function mapService() {
   return window['L'];

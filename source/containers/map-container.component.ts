@@ -67,7 +67,6 @@ function createGeocodeService(appConfig, http: Http) {
 export default class Map implements OnDestroy {
 
   private map: any;
-  private geocodeService: GeocodeService;
   protected unsubscribe: Function;
   protected search: Function;
 
