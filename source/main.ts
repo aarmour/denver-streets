@@ -35,7 +35,6 @@ import { AppConfig, loadFromGlobal } from './services/app-config.service';
 // Providers
 import { HTTP_PROVIDERS } from 'angular2/http';
 import { MAP_SERVICE_PROVIDERS } from './services/map.service';
-import { GEOCODE_SERVICE_PROVIDERS } from './services/geocode.service';
 
 // Bootstrap
 const createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
@@ -45,6 +44,5 @@ bootstrap(App, [
   HTTP_PROVIDERS,
   provide(AppConfig, { useValue: loadFromGlobal('Config') }),
   provider(store),
-  MAP_SERVICE_PROVIDERS,
-  GEOCODE_SERVICE_PROVIDERS
+  MAP_SERVICE_PROVIDERS
 ]);

@@ -1,4 +1,5 @@
-import { Component, Inject, OnDestroy } from 'angular2/core';
+import { Component, Inject, OnDestroy, provide } from 'angular2/core';
+import { Http } from 'angular2/http';
 const { bindActionCreators } = require('redux');
 import { MapMenu } from '../components/map-menu';
 import SearchBar from '../components/search-bar.component';
@@ -11,11 +12,21 @@ const MAP_CENTER = [-104.9, 39.7];
 const MAP_BOUNDS = [[-105.1, 39.6], [-104.7, 39.8]];
 const MAP_PITCH = 60;
 
+function createGeocodeService(appConfig, http: Http) {
+  return new GeocodeService({
+    accessToken: appConfig.mapbox.accessToken,
+    proximity: MAP_CENTER
+  }, http);
+}
+
 @Component({
   selector: 'map',
   directives: [
     MapMenu,
     SearchBar
+  ],
+  providers: [
+    provide(GeocodeService, { useFactory: createGeocodeService, deps: [AppConfig, Http] })
   ],
   template: `
     <style>

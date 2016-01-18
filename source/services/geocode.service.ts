@@ -1,10 +1,11 @@
 import { provide, Injectable, Inject } from 'angular2/core';
-import { Http } from 'angular2/http';
+import { Http, URLSearchParams } from 'angular2/http';
 import { AppConfig } from './app-config.service';
 
 interface GeocodeServiceOptions {
   baseUri?: string,
   dataset?: string,
+  proximity?: number[],
   accessToken: string
 }
 
@@ -24,26 +25,26 @@ export default class GeocodeService {
     this.http = http;
   }
 
-  _formatQuery(query = '') {
+  formatQuery(query = '') {
     return encodeURIComponent(query.replace(/;/g, ''));
   }
 
   forwardGeocode(query = '') {
-    const { baseUri, dataset, accessToken } = this.options;
+    const { baseUri, dataset, proximity, accessToken } = this.options;
 
-    query = this._formatQuery(query);
+    query = this.formatQuery(query);
 
-    const uri = `${baseUri}${dataset}/${query}.json?access_token=${accessToken}`;
+    const searchParams = new URLSearchParams();
 
-    return this.http.get(uri)
+    searchParams.set('access_token', accessToken);
+
+    if (proximity) {
+      searchParams.set('proximity', proximity.join(','));
+    }
+
+    const uri = `${baseUri}${dataset}/${query}.json`;
+
+    return this.http.get(uri, { search: searchParams })
       .map(response => response.json());
   }
 }
-
-export function createGeocodeService(config, http: Http) {
-  return new GeocodeService({ accessToken: config.mapbox.accessToken }, http);
-}
-
-export const GEOCODE_SERVICE_PROVIDERS = [
-  provide(GeocodeService, { useFactory: createGeocodeService, deps: [AppConfig, Http] })
-];
