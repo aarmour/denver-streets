@@ -1,7 +1,10 @@
 export const SEARCH = 'SEARCH';
 
 export function requestSearch(query) {
-  return { type: SEARCH };
+  return {
+    type: SEARCH,
+    query
+  };
 }
 
 export function receiveSearch(query, json) {

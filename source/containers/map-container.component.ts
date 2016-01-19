@@ -59,7 +59,11 @@ function createGeocodeService(appConfig, http: Http) {
     </style>
     <map-menu (changeOptions)="handleChangeOptions($event)"></map-menu>
     <div class="search-control">
-      <search-bar (search)="handleSearch($event)"></search-bar>
+      <search-bar
+        (search)="handleSearch($event)"
+        placeholder="Enter an address"
+        lastQuery="{{lastQuery}}">
+      </search-bar>
     </div>
     <div id="${ELEMENT_ID}" class="map"></div>
   `
@@ -120,7 +124,8 @@ export default class Map implements OnDestroy {
 
   mapStateToThis(state) {
     return {
-      location: state.location
+      location: state.location,
+      lastQuery: state.lastQuery
     };
   }
 
