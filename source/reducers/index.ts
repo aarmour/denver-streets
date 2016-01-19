@@ -1,4 +1,4 @@
-const combineReducers = require('redux').combineReducers;
+import { combineReducers } from 'redux';
 import location from './location.reducer';
 
 export const rootReducer = combineReducers({

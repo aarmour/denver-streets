@@ -1,6 +1,6 @@
 import { Component, Inject, OnDestroy, provide } from 'angular2/core';
 import { Http } from 'angular2/http';
-const { bindActionCreators } = require('redux');
+import { bindActionCreators } from 'redux';
 import { MapMenu } from '../components/map-menu';
 import SearchBar from '../components/search-bar.component';
 import { AppConfig } from '../services/app-config.service';
