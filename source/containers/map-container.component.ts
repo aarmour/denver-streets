@@ -62,7 +62,8 @@ function createGeocodeService(appConfig, http: Http) {
       <search-bar
         (search)="handleSearch($event)"
         placeholder="Enter an address"
-        lastQuery="{{lastQuery}}">
+        lastQuery="{{lastQuery}}"
+        [disabled]="isSearching">
       </search-bar>
     </div>
     <div id="${ELEMENT_ID}" class="map"></div>
@@ -125,7 +126,8 @@ export default class Map implements OnDestroy {
   mapStateToThis(state) {
     return {
       location: state.location,
-      lastQuery: state.lastQuery
+      lastQuery: state.lastQuery,
+      isSearching: state.isSearching
     };
   }
 

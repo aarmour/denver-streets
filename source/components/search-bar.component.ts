@@ -6,7 +6,8 @@ import { FORM_DIRECTIVES } from 'angular2/common';
   directives: [FORM_DIRECTIVES],
   inputs: [
     'placeholder',
-    'lastQuery'
+    'lastQuery',
+    'disabled'
   ],
   template: `
     <style>
@@ -25,6 +26,11 @@ import { FORM_DIRECTIVES } from 'angular2/common';
         font-size: 0.8em;
         color: #fff;
         background-color: rgb(0, 116, 228);
+        transition: background 0.1s ease-out;
+      }
+
+      .search-box > button[disabled] {
+        background-color: #b2dbff;
       }
 
       .search-input {
@@ -33,6 +39,11 @@ import { FORM_DIRECTIVES } from 'angular2/common';
         border: 0;
         border-radius: 4px;
         color: #333;
+        transition: color 0.1s ease-out;
+      }
+
+      .search-input[disabled] {
+        color: #b6b6b6;
       }
 
       .search-box.has-summary .search-input {
@@ -53,7 +64,7 @@ import { FORM_DIRECTIVES } from 'angular2/common';
       }
 
       .label {
-        color: #B2DBFF;
+        color: #b2dbff;
         margin-right: 10px;
       }
     </style>
@@ -67,8 +78,9 @@ import { FORM_DIRECTIVES } from 'angular2/common';
           autocorrect="off"
           tabindex="1"
           placeholder="{{placeholder}}"
-          [(ngModel)]="query">
-        <button type="submit">Search</button>
+          [(ngModel)]="query"
+          [disabled]="disabled">
+        <button type="submit" [disabled]="disabled">Search</button>
       </div>
       <div *ngIf="lastQuery" class="search-summary">
         <span class="label">Last search</span> {{lastQuery}}
@@ -81,6 +93,7 @@ export default class SearchBar {
   @Output() search = new EventEmitter();
 
   public placeholder: string = '';
+  public disabled: boolean = false;
   public lastQuery: string = '';
   private query: string = '';
 
