@@ -26,7 +26,7 @@ import { FORM_DIRECTIVES } from 'angular2/common';
 
       .search-input {
         width: 100%;
-        padding: 9px 72px 10px 20px;
+        padding: 8px 72px 10px 20px;
         border: 0;
         border-radius: 4px;
         box-shadow: 0px 0px 0px 2px rgba(0, 0, 0, 0.1);
