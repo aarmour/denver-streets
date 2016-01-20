@@ -1,8 +1,8 @@
 import { Component, Inject, OnDestroy, provide } from 'angular2/core';
 import { Http } from 'angular2/http';
 import { bindActionCreators } from 'redux';
-import { MapMenu } from '../components/map-menu';
 import SearchBar from '../components/search-bar.component';
+const MenuControl = require('../mapbox-plugins/gl/control/menu');
 import { AppConfig } from '../services/app-config.service';
 import GeocodeService from '../services/geocode.service';
 import * as SearchActions from '../actions/search.actions';
@@ -22,7 +22,6 @@ function createGeocodeService(appConfig, http: Http) {
 @Component({
   selector: 'map',
   directives: [
-    MapMenu,
     SearchBar
   ],
   providers: [
@@ -57,7 +56,6 @@ function createGeocodeService(appConfig, http: Http) {
         }
       }
     </style>
-    <map-menu (changeOptions)="handleChangeOptions($event)"></map-menu>
     <div class="search-control">
       <search-bar
         (search)="handleSearch($event)"
@@ -99,24 +97,12 @@ export default class Map implements OnDestroy {
       });
 
       map.addControl(new mapService.Navigation());
+      map.addControl(new MenuControl());
     }, 0);
   }
 
   ngOnDestroy() {
     this.unsubscribe();
-  }
-
-  toggleTilt(isTilted) {
-    const map = this.map;
-    const cameraOptions = {
-      pitch: isTilted ? MAP_PITCH : 0
-    };
-
-    map.easeTo(cameraOptions);
-  }
-
-  handleChangeOptions(newOptions) {
-    this.toggleTilt(newOptions.isTilted);
   }
 
   handleSearch(query: string) {
