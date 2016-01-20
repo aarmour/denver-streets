@@ -1,10 +1,12 @@
 import { Component, Inject } from 'angular2/core';
 import Map from './map-container.component';
+import SidePanel from '../components/side-panel.component';
 
 @Component({
   selector: 'app',
-  directives: [Map],
+  directives: [Map, SidePanel],
   template: `
+    <side-panel isOpen="true">This is the side panel</side-panel>
     <map></map>
   `
 })
