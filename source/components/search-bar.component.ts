@@ -63,10 +63,19 @@ import { FORM_DIRECTIVES } from 'angular2/common';
         text-transform: uppercase;
       }
 
-      .label {
-        color: #b2dbff;
+      .search-summary .label {
+        color: #fff;
         margin-right: 10px;
       }
+
+      .search-summary a {
+        color: #b2dbff;
+      }
+
+      .search-summary a:hover {
+        color: #79c0ff;
+      }
+
     </style>
 
     <form role="search" (ngSubmit)="handleSubmit()">
@@ -83,7 +92,7 @@ import { FORM_DIRECTIVES } from 'angular2/common';
         <button type="submit" [disabled]="disabled">Search</button>
       </div>
       <div *ngIf="lastQuery" class="search-summary">
-        <span class="label">Last search</span> {{lastQuery}}
+        <span class="label">Last search</span> <a href="#" (click)="handleClickLastQuery($event, lastQuery)">{{lastQuery}}</a>
       </div>
     </form>
   `
@@ -103,5 +112,11 @@ export default class SearchBar {
     if (query) {
       this.search.next(query);
     }
+  }
+
+  handleClickLastQuery(event, query) {
+    this.search.next(query);
+    event.preventDefault();
+    this.query = '';
   }
 }

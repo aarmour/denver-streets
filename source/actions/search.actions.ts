@@ -34,3 +34,12 @@ export function search(query, geocodeService) {
       );
   };
 }
+
+export const SELECT_SEARCH_RESULT = 'SELECT_SEARCH_RESULT';
+
+export function selectSearchResult(searchResult) {
+  return {
+    type: SELECT_SEARCH_RESULT,
+    searchResult
+  };
+}

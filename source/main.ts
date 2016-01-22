@@ -6,6 +6,7 @@ import App from './containers/app-container.component';
 import configureStore from './store/configure-store';
 
 // Providers
+import { ROUTER_PROVIDERS } from 'angular2/router';
 import { HTTP_PROVIDERS } from 'angular2/http';
 import { MAP_SERVICE_PROVIDERS } from './services/map.service';
 
@@ -19,6 +20,7 @@ if (process.env.ENV !== 'production') {
 const store = configureStore();
 
 bootstrap(App, [
+  ROUTER_PROVIDERS,
   HTTP_PROVIDERS,
   provide(AppConfig, { useValue: loadFromGlobal('Config') }),
   provider(store),

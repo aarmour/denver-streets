@@ -1,21 +1,29 @@
 import { Component, Inject } from 'angular2/core';
+import { RouteConfig, ROUTER_DIRECTIVES } from 'angular2/router';
 import Map from './map-container.component';
-import SidePanel from '../components/side-panel.component';
+import SearchResultsPanelContainer from './search-results-panel-container.component';
 
 @Component({
   selector: 'app',
-  directives: [Map, SidePanel],
+  directives: [
+    Map,
+    ROUTER_DIRECTIVES
+  ],
   template: `
-    <side-panel isOpen="true">This is the side panel</side-panel>
+    <router-outlet></router-outlet>
     <map></map>
   `
 })
+@RouteConfig([
+  { path: '/search/q/:query', name: 'Search', component: SearchResultsPanelContainer }
+])
 export default class AppContainer {
+
+  protected unsubscribe: Function;
+
   constructor(@Inject('ngRedux') ngRedux) {
     this.unsubscribe = ngRedux.connect(this.mapStateToThis/*, this.mapDispatchToThis */)(this);
   }
-
-  unsubscribe() {}
 
   ngOnDestroy() {
     this.unsubscribe();
@@ -32,4 +40,5 @@ export default class AppContainer {
     // TODO (optional): bind action creators to 'this'
     // return { actions: bindActionCreators(SomeActions, dispatch) };
   }
+
 }
