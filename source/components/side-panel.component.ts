@@ -15,6 +15,7 @@ import { Component, EventEmitter } from 'angular2/core';
         width: 22em;
         height: 100%;
         padding: 1em;
+        overflow-y: scroll;
         z-index: 1;
         background-color: #fff;
         box-shadow: 1px 0px 2px rgba(0,0,0,0.3);
