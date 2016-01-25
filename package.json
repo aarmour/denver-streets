@@ -7,7 +7,9 @@
     "start": ""
   },
   "keywords": [],
-  "author": "BrieBug Solutions",
+  "author": {
+    "name": "Adam Armour"
+  },
   "license": "MIT",
   "config": {
     "commitizen": {
