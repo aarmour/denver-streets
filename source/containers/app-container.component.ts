@@ -1,7 +1,7 @@
 import { Component, Inject } from 'angular2/core';
 import { RouteConfig, ROUTER_DIRECTIVES } from 'angular2/router';
 import Map from './map-container.component';
-import SearchResultsPanelContainer from './search-results-panel-container.component';
+import SearchResultsPanel from './search-results-panel-container.component';
 
 @Component({
   selector: 'app',
@@ -15,7 +15,7 @@ import SearchResultsPanelContainer from './search-results-panel-container.compon
   `
 })
 @RouteConfig([
-  { path: '/search/q/:query', name: 'Search', component: SearchResultsPanelContainer }
+  { path: '/search/q/:query', name: 'Search', component: SearchResultsPanel }
 ])
 export default class AppContainer {
 

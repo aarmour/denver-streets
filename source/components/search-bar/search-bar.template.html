@@ -1,0 +1,17 @@
+<form role="search" (ngSubmit)="handleSubmit()">
+  <div class="search-bar" [ngClass]="{'has-summary': lastQuery}">
+    <input
+      class="search-input"
+      type="text"
+      autocomplete="off"
+      autocorrect="off"
+      tabindex="1"
+      placeholder="{{placeholder}}"
+      [(ngModel)]="query"
+      [disabled]="disabled">
+    <button type="submit" [disabled]="disabled">Search</button>
+  </div>
+  <div *ngIf="lastQuery" class="search-summary">
+    <span class="label">Last search</span> <a href="#" (click)="handleClickLastQuery($event, lastQuery)">{{lastQuery}}</a>
+  </div>
+</form>

@@ -1,0 +1,12 @@
+<div class="side-panel" [ngClass]="{open: isOpen}">
+  <button class="btn-close" *ngIf="showCloseBtn" (click)="close()"></button>
+  <div class="toggle-tab" *ngIf="showToggleTab">
+    <button (click)="toggle()">
+      <span *ngIf="isOpen">≪</span>
+      <span *ngIf="!isOpen">≫</span>
+    </button>
+  </div>
+  <div class="content">
+    <ng-content></ng-content>
+  </div>
+</div>

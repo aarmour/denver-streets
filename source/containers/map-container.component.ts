@@ -2,7 +2,7 @@ import { Component, Inject, OnDestroy, provide } from 'angular2/core';
 import { Router } from 'angular2/router';
 import { Http } from 'angular2/http';
 import { bindActionCreators } from 'redux';
-import SearchBar from '../components/search-bar.component';
+import SearchBar from '../components/search-bar/search-bar.component';
 const MenuControl = require('../mapbox-plugins/gl/control/menu');
 import { AppConfig } from '../services/app-config.service';
 import GeocodeService from '../services/geocode.service';

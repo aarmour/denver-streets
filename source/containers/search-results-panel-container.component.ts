@@ -1,6 +1,6 @@
 import { Component, Inject } from 'angular2/core';
 import { bindActionCreators } from 'redux';
-import SidePanel from '../components/side-panel.component';
+import SidePanel from '../components/side-panel/side-panel.component';
 import { SearchResults } from '../components/search-results';
 import * as SearchActions from '../actions/search.actions';
 
