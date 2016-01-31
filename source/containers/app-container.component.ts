@@ -1,17 +1,20 @@
 import { Component, Inject } from 'angular2/core';
 import { RouteConfig, ROUTER_DIRECTIVES } from 'angular2/router';
-import Map from './map-container.component';
+import SearchBarContainer from './search-bar-container.component';
+import MapContainer from './map-container.component';
 import SearchResultsPanel from './search-results-panel-container.component';
 
 @Component({
-  selector: 'app',
+  selector: 'app-container',
   directives: [
-    Map,
+    SearchBarContainer,
+    MapContainer,
     ROUTER_DIRECTIVES
   ],
   template: `
     <router-outlet></router-outlet>
-    <map></map>
+    <search-bar-container></search-bar-container>
+    <map-container></map-container>
   `
 })
 @RouteConfig([
@@ -22,7 +25,7 @@ export default class AppContainer {
   protected unsubscribe: Function;
 
   constructor(@Inject('ngRedux') ngRedux) {
-    this.unsubscribe = ngRedux.connect(this.mapStateToThis/*, this.mapDispatchToThis */)(this);
+    this.unsubscribe = ngRedux.connect(this.mapStateToThis)(this);
   }
 
   ngOnDestroy() {
@@ -30,15 +33,7 @@ export default class AppContainer {
   }
 
   mapStateToThis(state) {
-    // TODO: bind state properties to 'this'
-    return {
-      // someProp: state.someProp
-    };
-  }
-
-  mapDispatchToThis(dispatch) {
-    // TODO (optional): bind action creators to 'this'
-    // return { actions: bindActionCreators(SomeActions, dispatch) };
+    return {};
   }
 
 }
