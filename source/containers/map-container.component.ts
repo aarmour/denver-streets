@@ -136,19 +136,16 @@ export default class Map implements OnDestroy {
   ngOnInit() {
     const { Map, GeoJSONSource, Navigation } = this.mapService;
 
-    // TODO: fix. This is a hack to get the map to draw correctly.
-    setTimeout(() => {
-      const map = this.map = new Map({
-        container: ELEMENT_ID,
-        style: 'mapbox://styles/mapbox/basic-v8',
-        center: MAP_CENTER,
-        maxBounds: MAP_BOUNDS,
-        zoom: 10
-      });
+    const map = this.map = new Map({
+      container: ELEMENT_ID,
+      style: 'mapbox://styles/mapbox/basic-v8',
+      center: MAP_CENTER,
+      maxBounds: MAP_BOUNDS,
+      zoom: 10
+    });
 
-      map.addControl(new Navigation());
-      map.addControl(new MenuControl());
-    }, 0);
+    map.addControl(new Navigation());
+    map.addControl(new MenuControl());
   }
 
   ngOnDestroy() {
