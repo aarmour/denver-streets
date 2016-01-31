@@ -25,15 +25,28 @@
     <!-- Inline styles for the mapbox plugins -->
     <!-- TODO: make external -->
     <style>
+      .mapboxgl-ctrl-top-right .mapboxgl-ctrl {
+        margin: 0;
+      }
+      .mapboxgl-ctrl-group {
+        border-radius: 0;
+        box-shadow: none;
+      }
+      .mapboxgl-ctrl-group > button {
+        border: 0;
+      }
       .mapboxgl-ctrl-menu-container {
         position: relative;
         overflow: visible;
       }
-      .mapboxgl-ctrl-menu-items {
+      .mapboxgl-ctrl-compass {
+        display: none !important;
+      }
+      .mapboxgl-ctrl-top-right .mapboxgl-ctrl-menu-items {
         display: none;
         list-style: none;
         position: absolute;
-        top: -101px;
+        top: -48px;
         right: 45px;
         margin: 0;
         padding: 1em;
@@ -46,9 +59,9 @@
         -ms-user-select: none;
         user-select: none;
       }
-      .mapboxgl-ctrl-menu-items:after {
+      .mapboxgl-ctrl-menu-items::after {
         left: 100%;
-        top: 107px;
+        top: 55px;
         border: solid transparent;
         content: ' ';
         height: 0;
