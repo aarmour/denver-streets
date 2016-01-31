@@ -49,12 +49,8 @@
 .toggle-tab button {
   height: 42px;
   margin-top: -21px;
-  color: #A5A5A5;
-  background: #fff;
-  border: solid 1px #ddd;
+  color: #ffffff;
+  background: #0074e4;
+  border: 0;
   outline: 0;
-}
-
-.toggle-tab button:focus {
-  background: #f3f3f3;
 }
