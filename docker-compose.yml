@@ -1,5 +1,5 @@
 elasticsearch:
-  image: elasticsearch:2
+  build: ./docker/build/elasticsearch
   ports:
     - "9200:9200"
     - "9300:9300"
