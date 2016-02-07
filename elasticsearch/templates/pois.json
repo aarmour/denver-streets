@@ -3,18 +3,54 @@
   "mappings": {
     "_default_": {
       "properties": {
-        "name": {
-          "type": "string"
-        },
         "category": {
           "type": "string",
           "index": "not_analyzed"
+        },
+        "name": {
+          "type": "string"
+        },
+        "address": {
+          "type": "object",
+          "properties": {
+            "street": {
+              "type": "string"
+            }
+          }
         },
         "point": {
           "type": "geo_point"
         },
         "geometry": {
           "type": "geo_shape"
+        }
+      }
+    },
+    "light-rail": {
+      "properties": {
+        "light_rail_pid": {
+          "type": "integer",
+          "index": "not_analyzed"
+        },
+        "light_rail_autos": {
+          "type": "integer",
+          "index": "not_analyzed"
+        },
+        "light_rail_racks": {
+          "type": "integer",
+          "index": "not_analyzed"
+        },
+        "light_rail_lockers": {
+          "type": "integer",
+          "index": "not_analyzed"
+        },
+        "light_rail_shelters": {
+          "type": "integer",
+          "index": "not_analyzed"
+        },
+        "light_rail_district": {
+          "type": "string",
+          "index": "not_analyzed"
         }
       }
     }
