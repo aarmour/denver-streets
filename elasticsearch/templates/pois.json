@@ -1,0 +1,18 @@
+{
+  "template": "pois",
+  "mappings": {
+    "_default_": {
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string"
+        },
+        "geometry": {
+          "type": "geo_shape"
+        }
+      }
+    }
+  }
+}
