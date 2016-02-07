@@ -23,6 +23,15 @@ module.exports = {
     format: 'port',
     env: 'PORT',
     default: 9001
+  },
+
+  monitoring: {
+    opsInterval: {
+      documentation: 'The interval in milliseconds to sample system and process performance metrics.',
+      format: Number,
+      env: 'MONITORING_OPS_INTERVAL',
+      default: 60000
+    }
   }
 
 };

@@ -10,4 +10,10 @@ server.connection({
   port: config.port
 });
 
-server.start(() => server.log(`Server running at: ${server.info.uri}`));
+server.register([
+  require('./monitoring')
+], err => {
+  if (err) throw err;
+  
+  server.start(() => server.log(`Server running at: ${server.info.uri}`));
+});
