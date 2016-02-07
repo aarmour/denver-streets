@@ -11,9 +11,10 @@ server.connection({
 });
 
 server.register([
-  require('./monitoring')
+  require('./monitoring'),
+  require('./api')
 ], err => {
   if (err) throw err;
-  
+
   server.start(() => server.log(`Server running at: ${server.info.uri}`));
 });
