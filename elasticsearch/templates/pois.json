@@ -9,6 +9,9 @@
         "category": {
           "type": "string"
         },
+        "point": {
+          "type": "geo_point"
+        },
         "geometry": {
           "type": "geo_shape"
         }
