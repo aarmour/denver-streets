@@ -4,15 +4,15 @@ exports.view = function (request, reply) {
   this.client.search({
     body: {
       query: {
-        bool: {
-          must: {
-            term: { category: request.params.category }
-          },
-          should: [
-            {
-              match: { _all: request.params.query }
-            }
-          ]
+        match: {
+          _all: {
+            query: request.params.query
+          }
+        }
+      },
+      filter: {
+        term: {
+          category: request.params.category
         }
       }
     }
