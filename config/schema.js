@@ -32,6 +32,15 @@ module.exports = {
       env: 'MONITORING_OPS_INTERVAL',
       default: 60000
     }
+  },
+
+  elasticsearch: {
+    host: {
+      documentation: 'Elasticsearch host.',
+      format: String,
+      env: 'ELASTICSEARCH_HOST',
+      default: '192.168.99.100:9200'
+    }
   }
 
 };

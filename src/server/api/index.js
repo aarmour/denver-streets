@@ -9,6 +9,9 @@ register.attributes = {
 
 function register(server, options, next) {
   server.register([
-    require('./search')
+    {
+      register: require('./search'),
+      options: { client: options.search.client }
+    }
   ], next);
 }

@@ -12,7 +12,12 @@ server.connection({
 
 server.register([
   require('./monitoring'),
-  require('./api')
+  {
+    register: require('./api'),
+    options: {
+      search: { client: require('./elasticsearch') }
+    }
+  }
 ], err => {
   if (err) throw err;
 

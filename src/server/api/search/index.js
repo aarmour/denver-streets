@@ -9,10 +9,28 @@ register.attributes = {
 };
 
 function register(server, options, next) {
+  server.bind({
+    client: options.client
+  });
+
+  server.ext('onPostHandler', handlers.response, { sandbox: 'plugin' });
+
   server.route({
     method: 'GET',
-    path: '/search',
-    handler: handlers.view
+    path: '/search/categories/{category}',
+    handler: handlers.categories.view
+  });
+
+  server.route({
+    method: 'GET',
+    path: '/search/categories/{category}/q/{query}',
+    handler: handlers.categoriesQuery.view
+  });
+
+  server.route({
+    method: 'GET',
+    path: '/search/q/{query}',
+    handler: handlers.query.view
   });
 
   next();
