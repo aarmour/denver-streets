@@ -1,6 +1,9 @@
+'use strict';
+
 exports.view = function (request, reply) {
-  this.client.search({ q: request.params.query })
-    .then(body => {
-      return reply(body);
-    });
+  const params = { q: request.params.query };
+
+  this.client.search(params)
+    .then(body => reply(body))
+    .catch(error => reply(error));
 };

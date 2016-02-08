@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = responseHandler;
 
 function formatElasticsearchResponse(response) {
@@ -10,6 +12,10 @@ function formatElasticsearchResponse(response) {
 }
 
 function responseHandler(request, reply) {
+  if (request.response instanceof Error) {
+    return reply.continue();
+  }
+
   const body = formatElasticsearchResponse(request.response.source);
 
   return reply(body);

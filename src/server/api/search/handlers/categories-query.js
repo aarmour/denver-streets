@@ -1,7 +1,7 @@
 'use strict';
 
 exports.view = function (request, reply) {
-  this.client.search({
+  const params = {
     body: {
       query: {
         match: {
@@ -16,6 +16,9 @@ exports.view = function (request, reply) {
         }
       }
     }
-  })
-    .then(body => reply(body));
+  };
+
+  this.client.search(params)
+    .then(body => reply(body))
+    .catch(error => reply(error));
 };
