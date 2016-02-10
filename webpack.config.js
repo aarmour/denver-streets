@@ -1,22 +1,24 @@
 const path = require('path');
 const webpack = require('webpack');
 
-const ENV = process.env.ENV = process.env.NODE_ENV = 'development';
-
 module.exports = {
 
   debug: true,
 
-  devtool: 'source-map',
+  devtool: 'inline-source-map',
 
   entry: [
-    'webpack-dev-server/client?http://localhost:3000',
-    'webpack/hot/dev-server'
+    'webpack-hot-middleware/client?path=/__webpack_hmr',
+    './src/client/index.js'
   ],
 
   output: {
-    path: path.join(__dirname, 'dist'),
+    path: path.resolve(__dirname, './dist'),
     filename: 'bundle.js',
+    publicPath: '/static/'
+  },
+
+  assets: {
     publicPath: '/static/'
   },
 
@@ -34,12 +36,9 @@ module.exports = {
   },
 
   plugins: [
-    new webpack.NoErrorsPlugin(),
-    new webpack.DefinePlugin({
-      'process.env': {
-        'ENV': JSON.stringify(ENV),
-        'NODE_ENV': JSON.stringify(ENV)
-      }
-    })
+    new webpack.optimize.OccurenceOrderPlugin(),
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.NoErrorsPlugin()
   ]
+
 };

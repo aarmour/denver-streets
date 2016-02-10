@@ -13,5 +13,5 @@ function register(server, options, next) {
       register: require('./search'),
       options: { client: options.search.client }
     }
-  ], next);
+  ], { routes: options.routes }, next);
 }

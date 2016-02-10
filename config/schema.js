@@ -22,7 +22,7 @@ module.exports = {
     documentation: 'The port to bind to.',
     format: 'port',
     env: 'PORT',
-    default: 9001
+    default: 9000
   },
 
   monitoring: {
