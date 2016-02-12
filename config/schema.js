@@ -41,6 +41,15 @@ module.exports = {
       env: 'ELASTICSEARCH_HOST',
       default: '192.168.99.100:9200'
     }
+  },
+
+  mapbox: {
+    accessToken: {
+      documentation: 'The MapBox access token.',
+      format: String,
+      env: 'MAPBOX_ACCESS_TOKEN',
+      default: 'pk.eyJ1IjoiYWFybW91ciIsImEiOiJjaWlucjJxNDkwMWVwdmptNWw4Z20xNXpwIn0.SwlGS26RAgqeTK1kD-Xclw'
+    }
   }
 
 };

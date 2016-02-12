@@ -23,7 +23,11 @@ module.exports = {
   },
 
   resolve: {
-    extensions: ['', '.js', '.json', '.css', '.html']
+    extensions: ['', '.js', '.json', '.css', '.html'],
+    alias: {
+      // Workaround for https://github.com/mapbox/mapbox-gl-js/issues/1649
+      'mapbox-gl': path.resolve('./node_modules/mapbox-gl/dist/mapbox-gl.js')
+    }
   },
 
   module: {

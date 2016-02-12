@@ -8,6 +8,8 @@ register.attributes = {
 };
 
 function register(server, options, next) {
+  server.bind({ mapbox: options.mapbox });
+
   server.route({
     method: 'GET',
     path: '/{files*}',

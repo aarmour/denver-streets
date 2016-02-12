@@ -1,0 +1,31 @@
+html {
+  box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+html,
+body {
+  font-family: 'Roboto', sans-serif;
+}
+
+a {
+  color: #0074E4;
+  text-decoration: none;
+}
+
+a:hover,
+a:focus,
+a:active {
+  color: #0053A2;
+}
+
+html,
+body,
+#app {
+  height: 100%;
+}

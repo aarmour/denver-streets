@@ -38,7 +38,10 @@ server.register([
 
   // views
   {
-    register: require('./views')
+    register: require('./views'),
+    options: {
+      mapbox: config.mapbox
+    }
   }
 
 ], err => {

@@ -1,8 +1,10 @@
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { Provider } from 'react-redux';
+import { match, RouterContext } from 'react-router';
+import styles from './styles';
 import configureStore from '../../common/store/configureStore';
-import App from '../../common/containers/App';
+import routes from '../../common/routes';
 
 module.exports = indexHandler;
 
@@ -11,26 +13,38 @@ function indexHandler(request, reply) {
 
   const initialState = {};
   const store = configureStore(initialState);
+  const { mapbox } = this;
 
-  const html = renderToString(
-    <Provider store={store}>
-      <App />
-    </Provider>
-  );
+  match({ routes, location: request.url }, (error, redirectLocation, renderProps) => {
+    if (error) return reply(error);
+    if (redirectLocation) return reply.redirect(redirectLocation.pathname + redirectLocation.search);
 
-  return reply(renderFullPage(html, initialState));
+    const html = renderToString(
+      <Provider store={store}>
+        <RouterContext {...renderProps} />
+      </Provider>
+    );
+
+    return reply(renderFullPage(html, { mapbox, initialState }));
+  });
 }
 
-function renderFullPage(html, initialState) {
+function renderFullPage(html, data) {
   return `
     <!doctype html>
     <html>
       <head>
+        <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+
+        <style>
+          ${styles}
+        </style>
       </head>
       <body>
         <div id="app">${html}</div>
         <script>
-          window.__INITIAL_STATE__ = ${JSON.stringify(initialState)}
+          window.__MAPBOX__ = ${JSON.stringify(data.mapbox)};
+          window.__INITIAL_STATE__ = ${JSON.stringify(data.initialState)};
         </script>
         <script src="/static/bundle.js"></script>
       </body>
