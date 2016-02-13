@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon src/server/index.js --watch src/server",
+    "start": "nodemon src/server/index.js --watch src/server --watch src/common/routes",
     "start-production": "node src/server",
     "lint": "eslint src"
   },
