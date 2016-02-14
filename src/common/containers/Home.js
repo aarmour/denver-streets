@@ -1,14 +1,29 @@
 import React, { Component } from 'react';
-import Panel from '../components/Panel';
-import MapGL from '../components/MapGL';
+import { browserHistory } from 'react-router';
+import { connect } from 'react-redux';
 import IndexPanel from './IndexPanel';
+import {
+  SearchBar,
+  Panel,
+  MapGL
+} from '../components';
 
-export default class Home extends Component {
+class Home extends Component {
+
+  constructor(props) {
+    super(props);
+    this.handleSearchBarSubmit = this.handleSearchBarSubmit.bind(this);
+  }
 
   get styles() {
     return {
       root: { height: '100%' },
-      content: { height: '100%' }
+      content: { height: '100%' },
+      searchBarContainer: {
+        position: 'absolute',
+        zIndex: 2,
+        width: 350
+      }
     };
   }
 
@@ -35,10 +50,23 @@ export default class Home extends Component {
 
     return (
       <div style={styles.root}>
+        <div style={styles.searchBarContainer}>
+          <SearchBar onSubmit={this.handleSearchBarSubmit} />
+        </div>
         <Panel>{this.props.panel || <IndexPanel />}</Panel>
         <div style={styles.content}>{this.renderContent()}</div>
       </div>
     );
   }
 
+  handleSearchBarSubmit(query) {
+    browserHistory.push(`/search/q/${query}`);
+  }
+
 }
+
+function mapStateToProps() {
+  return {};
+}
+
+export default connect(mapStateToProps)(Home);

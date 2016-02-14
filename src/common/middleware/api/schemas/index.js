@@ -3,5 +3,5 @@ import searchResultSchema from './searchResult';
 
 export default {
   SEARCH_RESULT: searchResultSchema,
-  SEARCH_RESULT_LIST: arrayOf(searchResultSchema)
+  SEARCH_RESULTS: arrayOf(searchResultSchema)
 };

@@ -4,7 +4,7 @@ import 'isomorphic-fetch';
 
 export { default as Schemas } from './schemas';
 
-const API_ROOT = '/api/';
+const API_ROOT = '/api';
 
 /**
  * Fetches an API response and normalizes the result JSON according to schema.
@@ -24,7 +24,11 @@ function callApi(endpoint, schema) {
 
       const camelizedJson = camelizeKeys(json);
 
-      return Object.assign({}, normalize(camelizedJson, schema));
+      if (schema) {
+        return Object.assign({}, normalize(camelizedJson, schema));
+      } else {
+        return camelizedJson;
+      }
     });
 }
 
@@ -46,10 +50,6 @@ export default store => next => action => {
 
   if (typeof endpoint !== 'string') {
     throw new Error('Specify a string endpoint URL.');
-  }
-
-  if (!schema) {
-    throw new Error('Specify one of the exported Schemas.');
   }
 
   if (!Array.isArray(types) || types.length !== 3) {
