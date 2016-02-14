@@ -25,13 +25,22 @@ function getLinks(requestUrl, pageSize, total) {
 
   requestUrl.search = undefined;
 
+  links.self = getPathFromUrlObj(requestUrl);
+
   if (hasNext(currentPage, total, pageSize)) {
     requestUrl.query.page = currentPage + 1;
     links.next = getPathFromUrlObj(requestUrl);
   }
 
   if (hasPrev(currentPage)) {
-    requestUrl.query.page = currentPage - 1;
+    const prevPage = currentPage - 1;
+
+    if (prevPage > 1) {
+      requestUrl.query.page = prevPage;
+    } else {
+      delete requestUrl.query.page;
+    }
+
     links.prev = getPathFromUrlObj(requestUrl);
   }
 
