@@ -1,6 +1,9 @@
 'use strict';
 
 exports.view = function (request, reply) {
+  const from = request.elasticsearch.from;
+  const size = request.elasticsearch.size;
+
   const params = {
     body: {
       query: {
@@ -14,7 +17,9 @@ exports.view = function (request, reply) {
         term: {
           category: request.params.category
         }
-      }
+      },
+      from,
+      size
     }
   };
 
