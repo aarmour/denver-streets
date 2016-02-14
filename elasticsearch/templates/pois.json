@@ -3,6 +3,10 @@
   "mappings": {
     "_default_": {
       "properties": {
+        "slug": {
+          "type": "string",
+          "index": "not_analyzed"
+        },
         "category": {
           "type": "string",
           "index": "not_analyzed"
