@@ -9,10 +9,7 @@ import routes from '../../common/routes';
 module.exports = indexHandler;
 
 function indexHandler(request, reply) {
-  // TODO: fetch initial state
-
-  const initialState = {};
-  const store = configureStore(initialState);
+  const store = configureStore();
   const { mapbox } = this;
 
   match({ routes, location: request.url }, (error, redirectLocation, renderProps) => {
@@ -24,6 +21,8 @@ function indexHandler(request, reply) {
         <RouterContext {...renderProps} />
       </Provider>
     );
+
+    const initialState = store.getState();
 
     return reply(renderFullPage(html, { mapbox, initialState }));
   });

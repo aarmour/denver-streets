@@ -12,6 +12,7 @@ class Home extends Component {
 
   constructor(props) {
     super(props);
+    this.state = { query: props.params.query };
     this.handleSearchBarSubmit = this.handleSearchBarSubmit.bind(this);
   }
 
@@ -25,6 +26,15 @@ class Home extends Component {
         width: 350
       }
     };
+  }
+
+  componentDidUpdate(prevProps) {
+    const oldQuery = prevProps.params.query;
+    const newQuery = this.props.params.query;
+
+    if (newQuery !== oldQuery) {
+      this.setState({ query: newQuery });
+    }
   }
 
   renderContent() {
@@ -47,11 +57,12 @@ class Home extends Component {
 
   render() {
     const { styles } = this;
+    const { query } = this.state;
 
     return (
       <div style={styles.root}>
         <div style={styles.searchBarContainer}>
-          <SearchBar onSubmit={this.handleSearchBarSubmit} />
+          <SearchBar onSubmit={this.handleSearchBarSubmit} value={query} />
         </div>
         <Panel>{this.props.panel || <IndexPanel />}</Panel>
         <div style={styles.content}>{this.renderContent()}</div>

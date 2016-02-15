@@ -4,6 +4,8 @@ export default class SearchBar extends Component {
 
   constructor(props) {
     super(props);
+    this.state = { value: props.value };
+    this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -36,8 +38,15 @@ export default class SearchBar extends Component {
     };
   }
 
+  componentWillReceiveProps(newProps) {
+    if (newProps.value !== this.state.value) {
+      this.setState({ value: newProps.value });
+    }
+  }
+
   render() {
-    const { styles, handleSubmit } = this;
+    const { styles, handleChange, handleSubmit } = this;
+    const { value } = this.state;
     const { placeholder, disabled } = this.props;
 
     return (
@@ -51,27 +60,35 @@ export default class SearchBar extends Component {
             autoCorrect="off"
             tabIndex="1"
             placeholder={placeholder}
-            disabled={disabled} />
+            disabled={disabled}
+            value={value}
+            onChange={handleChange} />
           <button style={styles.button} type="submit" disabled={disabled}>Search</button>
         </form>
       </div>
     );
   }
 
-  handleSubmit(e) {
-    e.preventDefault();
+  handleChange(event) {
+    this.setState({ value: event.target.value });
+  }
+
+  handleSubmit(event) {
+    event.preventDefault();
     this.props.onSubmit(this.input.value);
   }
 
 }
 
 SearchBar.propTypes = {
+  value: PropTypes.string,
   disabled: PropTypes.bool,
   placeholder: PropTypes.string,
   onSubmit: PropTypes.func.isRequired
 };
 
 SearchBar.defaultProps = {
+  value: '',
   disabled: false,
   placeholder: ''
 };

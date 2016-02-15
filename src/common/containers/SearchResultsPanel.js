@@ -1,11 +1,14 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { loadSearchResults } from '../actions/search';
+import Pagination from '../components/pagination';
 
 class SearchResultsPanel extends Component {
 
   constructor(props) {
     super(props);
+    this.handleSelectPrevPage = this.handleSelectPrevPage.bind(this);
+    this.handleSelectNextPage = this.handleSelectNextPage.bind(this);
   }
 
   componentDidMount() {
@@ -32,7 +35,16 @@ class SearchResultsPanel extends Component {
   }
 
   render() {
-    const { total, results } = this.props.searchResults;
+    const { handleSelectPrevPage, handleSelectNextPage } = this;
+    const { pagination } = this.props;
+    const { isFetching, prevPageUrl, nextPageUrl, selectedPage } = pagination;
+    const { total, results } = pagination[selectedPage] || {};
+    const hasPrev = !!prevPageUrl;
+    const hasNext = !!nextPageUrl;
+
+    if (isFetching) {
+      return <div>Loading&hellip;</div>;
+    }
 
     if (!total) {
       return <div>No results</div>;
@@ -45,19 +57,47 @@ class SearchResultsPanel extends Component {
             return <li key={searchResult.slug}>{this.renderSearchResult(searchResult)}</li>;
           })}
         </ul>
+        <Pagination
+          hasPrev={hasPrev}
+          hasNext={hasNext}
+          onSelectPrev={handleSelectPrevPage}
+          onSelectNext={handleSelectNextPage}
+        />
       </div>
     );
+  }
+
+  handleSelectPrevPage() {
+    const { query } = this.props.params;
+    const { pagination, loadSearchResults } = this.props;
+    const { prevPageUrl } = pagination;
+
+    loadSearchResults(query, prevPageUrl);
+  }
+
+  handleSelectNextPage() {
+    const { query } = this.props.params;
+    const { pagination, loadSearchResults } = this.props;
+    const { nextPageUrl } = pagination;
+
+    loadSearchResults(query, nextPageUrl);
   }
 
 }
 
 SearchResultsPanel.propTypes = {
+  pagination: PropTypes.object,
   loadSearchResults: PropTypes.func.isRequired
 };
 
-function mapStateToProps(state) {
+SearchResultsPanel.defaultProps = {
+  pagination: {}
+};
+
+function mapStateToProps(state, ownProps) {
   return {
-    searchResults: state.searchResults
+    pagination: state.pagination.searchResults[ownProps.params.query],
+    // searchResults: state.searchResults
   };
 }
 
