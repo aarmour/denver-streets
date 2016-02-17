@@ -12,6 +12,14 @@ function register(server, options, next) {
 
   server.route({
     method: 'GET',
+    path: '/static/{filename}',
+    handler: {
+      file: request => `./dist/${request.params.filename}`
+    }
+  });
+
+  server.route({
+    method: 'GET',
     path: '/{files*}',
     handler: require('./index-handler')
   });

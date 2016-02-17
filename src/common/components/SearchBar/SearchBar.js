@@ -9,35 +9,6 @@ export default class SearchBar extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  get styles() {
-    const { disabled } = this.props;
-
-    return {
-      input: {
-        width: '100%',
-        padding: '8px 72px 10px 20px',
-        border: 0,
-        color: disabled ? '#b6b6b6' : '#333333',
-        outline: 0,
-        transition: 'color 0.1s ease-out'
-      },
-
-      button: {
-        display: 'inline-block',
-        position: 'absolute',
-        top: 5,
-        right: 5,
-        padding: 6,
-        border: 0,
-        fontSize: '0.8em',
-        color: '#ffffff',
-        backgroundColor: disabled ? '#b2dbff' : '#0074e4',
-        transition: 'background 0.1s ease-out'
-      }
-
-    };
-  }
-
   componentWillReceiveProps(newProps) {
     if (newProps.value !== this.state.value) {
       this.setState({ value: newProps.value });
@@ -45,16 +16,16 @@ export default class SearchBar extends Component {
   }
 
   render() {
-    const { styles, handleChange, handleSubmit } = this;
+    const { handleChange, handleSubmit } = this;
     const { value } = this.state;
     const { placeholder, disabled } = this.props;
 
     return (
-      <div>
+      <div className="search-bar">
         <form role="search" onSubmit={handleSubmit}>
           <input
             ref={ref => this.input = ref}
-            style={styles.input}
+            className="search-bar__input"
             type="text"
             autoComplete="off"
             autoCorrect="off"
@@ -63,7 +34,12 @@ export default class SearchBar extends Component {
             disabled={disabled}
             value={value}
             onChange={handleChange} />
-          <button style={styles.button} type="submit" disabled={disabled}>Search</button>
+          <button
+            className="search-bar__button"
+            type="submit"
+            disabled={disabled}>
+            Search
+          </button>
         </form>
       </div>
     );

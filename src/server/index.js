@@ -24,6 +24,9 @@ server.register([
     }
   },
 
+  // Static assets
+  require('inert'),
+
   // Process monitoring
   require('./monitoring'),
 

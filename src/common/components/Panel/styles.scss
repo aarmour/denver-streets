@@ -1,0 +1,35 @@
+.panel {
+  position: absolute;
+  top: 0;
+  left: -350px;
+  width: 350px;
+  height: 100%;
+  z-index: 1;
+  background-color: #ffffff;
+  box-shadow: 1px 0px 2px rgba(0,0,0,0.3);
+  transition: all 0.2s ease-in-out;
+}
+
+.panel--open {
+  left: 0;
+}
+
+.panel__toggle {
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  margin-top: -21px;
+
+  > button {
+    height: 42px;
+    color: #ffffff;
+    background: #0074e4;
+    border: 0;
+    outline: 0;
+  }
+}
+
+.panel__content {
+  height: inherit;
+  overflow-y: scroll;
+}

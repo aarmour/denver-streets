@@ -37,8 +37,10 @@ function renderFullPage(html, data) {
         <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
 
         <style>
-          ${styles}
+          ${styles.inline}
         </style>
+
+        <link href="/static/${styles.external['main.css']}" rel="stylesheet">
       </head>
       <body>
         <div id="app">${html}</div>

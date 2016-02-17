@@ -1,0 +1,29 @@
+.search-bar__input {
+  width: 100%;
+  padding: 8px 72px 10px 20px;
+  border: 0;
+  color: #333333;
+  outline: 0;
+  transition: color 0.1s ease-out;
+
+  &:disabled {
+    color: #b6b6b6;
+  }
+}
+
+.search-bar__button {
+  display: inline-block;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  padding: 6px;
+  border: 0;
+  font-size: 0.8em;
+  color: #ffffff;
+  background-color: #0074e4;
+  transition: background 0.1s ease-out;
+
+  &:disabled {
+    background-color: #b2dbff;
+  }
+}
