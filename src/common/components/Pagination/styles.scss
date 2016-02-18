@@ -1,0 +1,12 @@
+.pagination {
+  > button {
+    margin: 0 5px;
+    color: #b6b6b6;
+    background-color: #ffffff;
+    border: 0;
+
+    &:disabled {
+      color: #eeeeee;
+    }
+  }
+}

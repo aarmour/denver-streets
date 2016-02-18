@@ -1,3 +1,4 @@
+export { default as Icon } from './Icon';
 export { default as MapGL } from './MapGL';
 export { default as Pagination } from './Pagination';
 export { default as Panel } from './Panel';

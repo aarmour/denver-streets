@@ -1,12 +1,17 @@
 import React, { PropTypes } from 'react';
+import { Icon } from '../';
 
 export default function Pagination(props) {
   const { hasNext, hasPrev, onSelectNext, onSelectPrev } = props;
 
   return (
-    <div>
-      <button disabled={!hasPrev} onClick={onSelectPrev}>Previous</button>
-      <button disabled={!hasNext} onClick={onSelectNext}>Next</button>
+    <div className="pagination">
+      <button disabled={!hasPrev} onClick={onSelectPrev}>
+        <Icon value="chevron-left" />
+      </button>
+      <button disabled={!hasNext} onClick={onSelectNext}>
+        <Icon value="chevron-right" />
+      </button>
     </div>
   );
 }
