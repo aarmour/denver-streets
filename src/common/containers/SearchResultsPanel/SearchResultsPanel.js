@@ -1,7 +1,10 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { loadSearchResults } from '../../actions/search';
-import Pagination from '../../components/pagination';
+import {
+  Pagination,
+  ProgressIndicator
+} from '../../components';
 
 class SearchResultsPanel extends Component {
 
@@ -30,7 +33,7 @@ class SearchResultsPanel extends Component {
     const { total, results } = pagination[selectedPage] || {};
 
     if (isFetching) {
-      return <div>Loading&hellip;</div>;
+      return <ProgressIndicator />;
     }
 
     if (!total) {
