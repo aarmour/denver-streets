@@ -1,31 +1,19 @@
 import React, { Component } from 'react';
 import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
-import IndexPanel from './IndexPanel';
+import IndexPanel from '../IndexPanel';
 import {
   SearchBar,
   Panel,
   MapGL
-} from '../components';
+} from '../../components';
 
-class Home extends Component {
+class HomePage extends Component {
 
   constructor(props) {
     super(props);
     this.state = { query: props.params.query };
     this.handleSearchBarSubmit = this.handleSearchBarSubmit.bind(this);
-  }
-
-  get styles() {
-    return {
-      root: { height: '100%' },
-      content: { height: '100%' },
-      searchBarContainer: {
-        position: 'absolute',
-        zIndex: 2,
-        width: 350
-      }
-    };
   }
 
   componentDidUpdate(prevProps) {
@@ -56,16 +44,15 @@ class Home extends Component {
   }
 
   render() {
-    const { styles } = this;
     const { query } = this.state;
 
     return (
-      <div style={styles.root}>
-        <div style={styles.searchBarContainer}>
+      <div className="home-page">
+        <div className="home-page__search-bar-container">
           <SearchBar onSubmit={this.handleSearchBarSubmit} value={query} />
         </div>
         <Panel>{this.props.panel || <IndexPanel />}</Panel>
-        <div style={styles.content}>{this.renderContent()}</div>
+        <div className="home-page__content">{this.renderContent()}</div>
       </div>
     );
   }
@@ -80,4 +67,4 @@ function mapStateToProps() {
   return {};
 }
 
-export default connect(mapStateToProps)(Home);
+export default connect(mapStateToProps)(HomePage);

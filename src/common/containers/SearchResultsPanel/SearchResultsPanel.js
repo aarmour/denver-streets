@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { loadSearchResults } from '../actions/search';
-import Pagination from '../components/pagination';
+import { loadSearchResults } from '../../actions/search';
+import Pagination from '../../components/pagination';
 
 class SearchResultsPanel extends Component {
 
@@ -24,6 +24,47 @@ class SearchResultsPanel extends Component {
     }
   }
 
+  renderContent() {
+    const { pagination } = this.props;
+    const { isFetching, selectedPage } = pagination;
+    const { total, results } = pagination[selectedPage] || {};
+
+    if (isFetching) {
+      return <div>Loading&hellip;</div>;
+    }
+
+    if (!total) {
+      return <div>No results</div>;
+    }
+
+    return (
+      <ul>
+      {results.map(searchResult => {
+        return <li key={searchResult.slug}>{this.renderSearchResult(searchResult)}</li>;
+      })}
+      </ul>
+    );
+  }
+
+  renderPager() {
+    const { handleSelectPrevPage, handleSelectNextPage } = this;
+    const { pagination } = this.props;
+    const { isFetching, prevPageUrl, nextPageUrl } = pagination;
+    const hasPrev = !!prevPageUrl;
+    const hasNext = !!nextPageUrl;
+
+    if (isFetching) return;
+
+    return (
+      <Pagination
+      hasPrev={hasPrev}
+      hasNext={hasNext}
+      onSelectPrev={handleSelectPrevPage}
+      onSelectNext={handleSelectNextPage}
+      />
+    );
+  }
+
   renderSearchResult(searchResult) {
     const { name } = searchResult;
 
@@ -35,34 +76,16 @@ class SearchResultsPanel extends Component {
   }
 
   render() {
-    const { handleSelectPrevPage, handleSelectNextPage } = this;
-    const { pagination } = this.props;
-    const { isFetching, prevPageUrl, nextPageUrl, selectedPage } = pagination;
-    const { total, results } = pagination[selectedPage] || {};
-    const hasPrev = !!prevPageUrl;
-    const hasNext = !!nextPageUrl;
-
-    if (isFetching) {
-      return <div>Loading&hellip;</div>;
-    }
-
-    if (!total) {
-      return <div>No results</div>;
-    }
 
     return (
       <div>
-        <ul>
-          {results.map(searchResult => {
-            return <li key={searchResult.slug}>{this.renderSearchResult(searchResult)}</li>;
-          })}
-        </ul>
-        <Pagination
-          hasPrev={hasPrev}
-          hasNext={hasNext}
-          onSelectPrev={handleSelectPrevPage}
-          onSelectNext={handleSelectNextPage}
-        />
+        <div className="search-results-panel__search-bar-spacer"></div>
+        <div className="search-results-panel__content">
+          {this.renderContent()}
+        </div>
+        <div className="search-results-panel__pager-container">
+          {this.renderPager()}
+        </div>
       </div>
     );
   }
@@ -96,8 +119,7 @@ SearchResultsPanel.defaultProps = {
 
 function mapStateToProps(state, ownProps) {
   return {
-    pagination: state.pagination.searchResults[ownProps.params.query],
-    // searchResults: state.searchResults
+    pagination: state.pagination.searchResults[ownProps.params.query]
   };
 }
 
