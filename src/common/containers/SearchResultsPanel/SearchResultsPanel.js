@@ -52,18 +52,16 @@ class SearchResultsPanel extends Component {
   renderPager() {
     const { handleSelectPrevPage, handleSelectNextPage } = this;
     const { pagination } = this.props;
-    const { isFetching, prevPageUrl, nextPageUrl } = pagination;
+    const { prevPageUrl, nextPageUrl } = pagination;
     const hasPrev = !!prevPageUrl;
     const hasNext = !!nextPageUrl;
 
-    if (isFetching) return;
-
     return (
       <Pagination
-      hasPrev={hasPrev}
-      hasNext={hasNext}
-      onSelectPrev={handleSelectPrevPage}
-      onSelectNext={handleSelectNextPage}
+        hasPrev={hasPrev}
+        hasNext={hasNext}
+        onSelectPrev={handleSelectPrevPage}
+        onSelectNext={handleSelectNextPage}
       />
     );
   }
