@@ -2,8 +2,10 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { loadSearchResults } from '../../actions/search';
 import {
+  List,
   Pagination,
-  ProgressIndicator
+  ProgressIndicator,
+  SearchResult
 } from '../../components';
 
 class SearchResultsPanel extends Component {
@@ -40,12 +42,10 @@ class SearchResultsPanel extends Component {
       return <div>No results</div>;
     }
 
+    const searchResults = results.map(this.renderSearchResult);
+
     return (
-      <ul>
-      {results.map(searchResult => {
-        return <li key={searchResult.slug}>{this.renderSearchResult(searchResult)}</li>;
-      })}
-      </ul>
+      <List items={searchResults} key="slug" />
     );
   }
 
@@ -67,13 +67,7 @@ class SearchResultsPanel extends Component {
   }
 
   renderSearchResult(searchResult) {
-    const { name } = searchResult;
-
-    return (
-      <div>
-        {name}
-      </div>
-    );
+    return <SearchResult result={searchResult} />;
   }
 
   render() {
