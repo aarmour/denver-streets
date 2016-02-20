@@ -1,10 +1,20 @@
+.search-results-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
 .search-results-panel__search-bar-spacer {
   height: 54px;
   background-color: #f7f7f7;
 }
 
-.search-results-panel__pager-container {
-  position: fixed;
+.search-results-panel__content {
+  flex: 1;
+  overflow: auto;
+}
+
+.search-results-panel__footer {
   bottom: 0;
   width: 350px;
   padding: 5px 0;

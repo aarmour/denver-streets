@@ -30,6 +30,6 @@
 }
 
 .panel__content {
-  height: inherit;
-  overflow-y: scroll;
+  height: 100%;
+  overflow: hidden;
 }

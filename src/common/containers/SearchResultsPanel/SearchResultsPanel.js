@@ -49,7 +49,7 @@ class SearchResultsPanel extends Component {
     );
   }
 
-  renderPager() {
+  renderFooter() {
     const { handleSelectPrevPage, handleSelectNextPage } = this;
     const { pagination } = this.props;
     const { prevPageUrl, nextPageUrl } = pagination;
@@ -73,13 +73,13 @@ class SearchResultsPanel extends Component {
   render() {
 
     return (
-      <div>
+      <div className="search-results-panel">
         <div className="search-results-panel__search-bar-spacer"></div>
         <div className="search-results-panel__content">
           {this.renderContent()}
         </div>
-        <div className="search-results-panel__pager-container">
-          {this.renderPager()}
+        <div className="search-results-panel__footer">
+          {this.renderFooter()}
         </div>
       </div>
     );
