@@ -17,6 +17,15 @@ try {
   console.log(`Missing or invalid configuration file for env '${env}' at: ${envFilePath}. Using the default configuration.`);
 }
 
+if (env === 'development') {
+  const localEnvFilePath = path.join(__dirname, '../../.local/env.json');
+  try {
+    config.loadFile(localEnvFilePath);
+  } catch (e) {
+    console.log(`Tried loading local env configuration from ${localEnvFilePath}, but file was not found.`);
+  }
+}
+
 // Validate
 // `strict: true` ensures that there are no properties that are not defined in
 // the schema.

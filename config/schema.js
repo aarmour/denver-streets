@@ -50,6 +50,36 @@ module.exports = {
       env: 'MAPBOX_ACCESS_TOKEN',
       default: 'pk.eyJ1IjoiYWFybW91ciIsImEiOiJjaWlucjJxNDkwMWVwdmptNWw4Z20xNXpwIn0.SwlGS26RAgqeTK1kD-Xclw'
     }
+  },
+
+  yelp: {
+    consumerKey: {
+      documentation: 'Yelp API consumer key.',
+      format: String,
+      env: 'YELP_CONSUMER_KEY',
+      default: ''
+    },
+
+    consumerSecret: {
+      documentation: 'Yelp API consumer secret.',
+      format: String,
+      env: 'YELP_CONSUMER_SECRET',
+      default: ''
+    },
+
+    token: {
+      documentation: 'Yelp API token.',
+      format: String,
+      env: 'YELP_TOKEN',
+      default: ''
+    },
+
+    tokenSecret: {
+      documentation: 'Yelp API token secret.',
+      format: String,
+      env: 'YELP_TOKEN_SECRET',
+      default: ''
+    }
   }
 
 };

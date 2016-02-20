@@ -1,3 +1,4 @@
 *.log
+.local
 dist
 node_modules
