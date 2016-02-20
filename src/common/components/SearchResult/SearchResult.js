@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { Link } from 'react-router';
 import { Icon } from '../';
 
 export default class SearchResult extends Component {
@@ -12,7 +13,7 @@ export default class SearchResult extends Component {
           <Icon value={result.icon} />
         </div>
         <div className="search-result__content">
-          {result.name}
+          <Link to={`/search/result/${result.slug}`}>{result.name}</Link>
         </div>
       </div>
     );
