@@ -12,6 +12,11 @@ function register(server, options, next) {
     {
       register: require('./search'),
       options: { client: options.search.client }
+    },
+
+    {
+      register: require('./yelp'),
+      options: options.yelp
     }
   ], { routes: options.routes }, next);
 }

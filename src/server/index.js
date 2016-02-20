@@ -35,6 +35,7 @@ server.register([
     register: require('./api'),
     options: {
       search: { client: require('./elasticsearch') },
+      yelp: config.yelp,
       routes: { prefix: '/api' }
     }
   },
