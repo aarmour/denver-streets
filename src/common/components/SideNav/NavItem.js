@@ -1,27 +1,51 @@
-import React, { PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
+import classNames from 'classnames';
 import Tooltip from 'react-tooltip';
 import { Icon } from '../';
 
-export default function NavItem(props) {
-  const { name, tooltip } = props;
-  const tooltipId = `nav-item-tooltip-${name}`;
+export default class NavItem extends Component {
 
-  return (
-    <div className="nav-item">
-      <button data-tip data-for={tooltipId}>
-        <Icon value={props.icon} size="lg" />
-      </button>
-      <Tooltip
-        id={tooltipId}
-        effect="solid"
-        place="right"
-      >
-        <span>{tooltip}</span>
-      </Tooltip>
-    </div>
-  );
+  constructor(props) {
+    super(props);
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  render() {
+    const { name, icon, tooltip, active } = this.props;
+    const tooltipId = `nav-item-tooltip-${name}`;
+    const rootClass = classNames({ 'nav-item': true, 'nav-item--active': active });
+
+    return (
+      <div className={rootClass}>
+        <button data-tip data-for={tooltipId} onClick={this.handleClick}>
+          <Icon value={icon} size="lg" />
+        </button>
+        <Tooltip
+          id={tooltipId}
+          effect="solid"
+          place="right"
+        >
+          <span>{tooltip}</span>
+        </Tooltip>
+      </div>
+    );
+  }
+
+  handleClick() {
+    const { onClick, name } = this.props;
+
+    if (onClick) {
+      onClick.call(null, name);
+    }
+  }
 }
 
 NavItem.propTypes = {
-  icon: PropTypes.string
+  active: PropTypes.bool,
+  icon: PropTypes.string,
+  onClick: PropTypes.func
+};
+
+NavItem.defaultProps = {
+  active: false
 };

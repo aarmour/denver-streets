@@ -14,8 +14,8 @@
   overflow: auto;
 }
 
-.search-results-panel__nav-container {
-  display: flex;
+.search-results-panel__search-results {
+  padding-left: 50px;
 }
 
 .search-results-panel__footer {
@@ -24,4 +24,5 @@
   padding: 5px 0;
   background-color: #ffffff;
   border-top: solid 1px #eeeeee;
+  z-index: 2;
 }

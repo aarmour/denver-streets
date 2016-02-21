@@ -5,7 +5,7 @@ export default function List(props) {
     <div className="list">
       <ul>
         {props.items.map(item => {
-          return <li key={item[props.key]}>{item}</li>;
+          return <li>{item}</li>;
         })}
       </ul>
     </div>

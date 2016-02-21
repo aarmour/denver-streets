@@ -1,24 +1,28 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { loadSearchResults } from '../../actions/search';
+import { loadSearchResults, loadYelpSearchResults } from '../../actions/search';
 import {
   List,
+  NavItem,
   Pagination,
   ProgressIndicator,
   SearchResult,
-  SideNav
+  SideNav,
+  YelpSearchResult
 } from '../../components';
 
 class SearchResultsPanel extends Component {
 
   constructor(props) {
     super(props);
+    this.state = { activeNavItem: 'default' };
     this.handleSelectPrevPage = this.handleSelectPrevPage.bind(this);
     this.handleSelectNextPage = this.handleSelectNextPage.bind(this);
+    this.handleSelectNavItem = this.handleSelectNavItem.bind(this);
   }
 
   componentDidMount() {
-    this.props.loadSearchResults(this.props.params.query);
+    this.loadSearchResultsForActiveNavItem();
   }
 
   componentDidUpdate(prevProps) {
@@ -26,42 +30,73 @@ class SearchResultsPanel extends Component {
     const newQuery = this.props.params.query;
 
     if (newQuery !== oldQuery) {
-      this.props.loadSearchResults(this.props.params.query);
+      this.loadSearchResultsForActiveNavItem();
     }
   }
 
   renderContent() {
-    const { pagination } = this.props;
-    const { isFetching, selectedPage } = pagination;
-    const { total, results } = pagination[selectedPage] || {};
+    const { handleSelectNavItem } = this;
+    const { activeNavItem } = this.state;
+
+    let searchResults = activeNavItem === 'yelp' ?
+      this.props.yelpSearchResults : this.props.searchResults;
+
+    if (!searchResults) return;
+
+    const { isFetching, selectedPage } = searchResults;
+    const resultsForPage = searchResults[selectedPage] || {};
+    const { total } = resultsForPage;
+    let content;
 
     if (isFetching) {
-      return <ProgressIndicator />;
+      content = <ProgressIndicator />;
+    } else if (!total) {
+      content = <div>No results</div>;
+    } else {
+      let listItems;
+
+      if (activeNavItem === 'yelp') {
+        const { businesses } = resultsForPage;
+
+        listItems = businesses.map(this.renderYelpSearchResult);
+      } else {
+        const { results } = searchResults[selectedPage] || {};
+
+        listItems = results.map(this.renderSearchResult);
+      }
+
+      content = <List items={listItems} key="slug" />;
     }
-
-    if (!total) {
-      return <div>No results</div>;
-    }
-
-    const navItems = [
-      { name: 'default', icon: 'dot-circle-o', tooltip: 'Search' },
-      { name: 'yelp', icon: 'yelp', tooltip: 'Search Yelp' }
-    ];
-
-    const searchResults = results.map(this.renderSearchResult);
 
     return (
-      <div className="search-results-panel__nav-container">
-        <SideNav navItems={navItems} />
-        <List items={searchResults} key="slug" />
+      <div>
+        <SideNav>
+          <NavItem
+            name="default"
+            icon="dot-circle-o"
+            tooltip="Search"
+            active={activeNavItem === 'default'}
+            onClick={handleSelectNavItem}
+          />
+          <NavItem
+            name="yelp"
+            icon="yelp"
+            tooltip="Search Yelp"
+            active={activeNavItem === 'yelp'}
+            onClick={handleSelectNavItem}
+          />
+        </SideNav>
+        <div className="search-results-panel__search-results">
+          {content}
+        </div>
       </div>
     );
   }
 
   renderFooter() {
     const { handleSelectPrevPage, handleSelectNextPage } = this;
-    const { pagination } = this.props;
-    const { prevPageUrl, nextPageUrl } = pagination;
+    const { searchResults } = this.props;
+    const { prevPageUrl, nextPageUrl } = searchResults;
     const hasPrev = !!prevPageUrl;
     const hasNext = !!nextPageUrl;
 
@@ -79,6 +114,10 @@ class SearchResultsPanel extends Component {
     return <SearchResult result={searchResult} />;
   }
 
+  renderYelpSearchResult(searchResult) {
+    return <YelpSearchResult {...searchResult} />;
+  }
+
   render() {
 
     return (
@@ -94,37 +133,58 @@ class SearchResultsPanel extends Component {
     );
   }
 
+  loadSearchResultsForActiveNavItem() {
+    const { activeNavItem } = this.state;
+    const { query } = this.props.params;
+
+    if (activeNavItem === 'yelp') {
+      this.props.loadYelpSearchResults(query);
+    } else {
+      this.props.loadSearchResults(query);
+    }
+  }
+
   handleSelectPrevPage() {
     const { query } = this.props.params;
-    const { pagination, loadSearchResults } = this.props;
-    const { prevPageUrl } = pagination;
+    const { searchResults, loadSearchResults } = this.props;
+    const { prevPageUrl } = searchResults;
 
     loadSearchResults(query, prevPageUrl);
   }
 
   handleSelectNextPage() {
     const { query } = this.props.params;
-    const { pagination, loadSearchResults } = this.props;
-    const { nextPageUrl } = pagination;
+    const { searchResults, loadSearchResults } = this.props;
+    const { nextPageUrl } = searchResults;
 
     loadSearchResults(query, nextPageUrl);
+  }
+
+  handleSelectNavItem(name) {
+    this.setState({ activeNavItem: name },
+      () => this.loadSearchResultsForActiveNavItem());
   }
 
 }
 
 SearchResultsPanel.propTypes = {
-  pagination: PropTypes.object,
-  loadSearchResults: PropTypes.func.isRequired
+  searchResults: PropTypes.object,
+  loadSearchResults: PropTypes.func.isRequired,
+  loadYelpSearchResults: PropTypes.func.isRequired
 };
 
 SearchResultsPanel.defaultProps = {
-  pagination: {}
+  searchResults: {}
 };
 
 function mapStateToProps(state, ownProps) {
   return {
-    pagination: state.pagination.searchResults[ownProps.params.query]
+    searchResults: state.pagination.searchResults[ownProps.params.query],
+    yelpSearchResults: state.pagination.yelpSearchResults[ownProps.params.query]
   };
 }
 
-export default connect(mapStateToProps, { loadSearchResults })(SearchResultsPanel);
+export default connect(mapStateToProps, {
+  loadSearchResults,
+  loadYelpSearchResults
+})(SearchResultsPanel);
