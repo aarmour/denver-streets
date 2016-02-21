@@ -5,7 +5,8 @@ import {
   List,
   Pagination,
   ProgressIndicator,
-  SearchResult
+  SearchResult,
+  SideNav
 } from '../../components';
 
 class SearchResultsPanel extends Component {
@@ -42,10 +43,18 @@ class SearchResultsPanel extends Component {
       return <div>No results</div>;
     }
 
+    const navItems = [
+      { name: 'default', icon: 'dot-circle-o', tooltip: 'Search' },
+      { name: 'yelp', icon: 'yelp', tooltip: 'Search Yelp' }
+    ];
+
     const searchResults = results.map(this.renderSearchResult);
 
     return (
-      <List items={searchResults} key="slug" />
+      <div className="search-results-panel__nav-container">
+        <SideNav navItems={navItems} />
+        <List items={searchResults} key="slug" />
+      </div>
     );
   }
 

@@ -6,3 +6,7 @@ export { default as Panel } from './Panel';
 export { default as ProgressIndicator } from './ProgressIndicator';
 export { default as SearchBar } from './SearchBar';
 export { default as SearchResult } from './SearchResult';
+
+// SideNav
+export { NavItem } from './SideNav';
+export { SideNav } from './SideNav';
