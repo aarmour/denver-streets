@@ -49,7 +49,11 @@ class SearchResultsPanel extends Component {
     let content;
 
     if (isFetching) {
-      content = <ProgressIndicator />;
+      content = (
+        <div className="search-results-panel__progress-indicator">
+          <ProgressIndicator />
+        </div>
+      );
     } else if (!total) {
       content = <div>No results</div>;
     } else {
