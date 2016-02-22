@@ -1,16 +1,20 @@
 import React, { PropTypes } from 'react';
+import classNames from 'classnames';
 
 export default function Icon(props) {
-  let classes = ['fa', `fa-${props.value}`];
+  const { style, size } = props;
+  const classes = classNames(
+    'fa', `fa-${props.value}`, { [`fa-${size}`]: typeof size !== 'undefined' });
 
-  if (props.size) {
-    classes = [...classes, `fa-${props.size}`];
-  }
-
-  return <span className={classes.join(' ')}></span>;
+  return <span className={classes} style={style}></span>;
 }
 
 Icon.propTypes = {
   value: PropTypes.string,
-  size: PropTypes.string
+  size: PropTypes.string,
+  style: PropTypes.object
+};
+
+Icon.defaultProps = {
+  style: {}
 };

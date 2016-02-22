@@ -12,3 +12,53 @@
 .search-result__content {
   flex: 1 1 auto;
 }
+
+// YelpSearchResult
+// ----------------
+
+.yelp-search-result {
+  font-size: 0.875em;
+}
+
+.yelp-search-result__media-group {
+  display: flex;
+}
+
+.yelp-search-result__media-group__thumbnail {
+  margin-right: 10px;
+
+  > img {
+    width: 65px;
+    border-radius: 4px;
+  }
+}
+
+.yelp-search-result__media-group__content {
+  flex: 1;
+  line-height: 1.4em;
+}
+
+.yelp-search-result__rating {
+  float: left;
+  margin-right: 5px;
+}
+
+.yelp-search-result__toggle {
+  float: right;
+
+  > button {
+    border: 0;
+    background: 0;
+    outline: 0;
+  }
+}
+
+.yelp-search-result__secondary-attributes {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms
+}
+
+.yelp-search-result__secondary-attributes--expanded {
+  max-height: 200px;
+}

@@ -29,3 +29,7 @@ body,
 #app {
   height: 100%;
 }
+
+.text--secondary {
+  color: #878787;
+}
