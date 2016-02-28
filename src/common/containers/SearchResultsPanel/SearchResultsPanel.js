@@ -79,7 +79,7 @@ class SearchResultsPanel extends Component {
         <SideNav>
           <NavItem
             name="default"
-            icon="dot-circle-o"
+            icon="home"
             tooltip="Search"
             active={activeNavItem === 'default'}
             onClick={handleSelectNavItem}
