@@ -57,7 +57,7 @@ class SearchResultsPanel extends Component {
         </div>
       );
     } else if (!total) {
-      content = <div>No results</div>;
+      content = <div className="search-results-panel__empty">No results</div>;
     } else {
       let listItems;
 
