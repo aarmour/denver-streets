@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { Icon } from '../';
 
 export default class Panel extends Component {
 
@@ -17,7 +18,7 @@ export default class Panel extends Component {
       <div className={rootClass}>
         <div className="panel__toggle">
           <button onClick={handleToggleClick}>
-            {isOpen ? '≪' : '≫'}
+            {isOpen ? <Icon value="caret-left" /> : <Icon value="caret-right" />}
           </button>
         </div>
         <div className="panel__content">{this.props.children}</div>
