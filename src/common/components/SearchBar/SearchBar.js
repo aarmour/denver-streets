@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { Icon } from '../';
 
 export default class SearchBar extends Component {
 
@@ -7,6 +8,7 @@ export default class SearchBar extends Component {
     this.state = { value: props.value };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleClickClear = this.handleClickClear.bind(this);
   }
 
   componentWillReceiveProps(newProps) {
@@ -16,7 +18,7 @@ export default class SearchBar extends Component {
   }
 
   render() {
-    const { handleChange, handleSubmit } = this;
+    const { handleChange, handleSubmit, handleClickClear } = this;
     const { value } = this.state;
     const { placeholder, disabled } = this.props;
 
@@ -34,15 +36,31 @@ export default class SearchBar extends Component {
             disabled={disabled}
             value={value}
             onChange={handleChange} />
-          <button
-            className="search-bar__button"
-            type="submit"
-            disabled={disabled}>
-            Search
-          </button>
+          <div className="search-bar__button-container">
+            <button
+              className="search-bar__button"
+              type="submit"
+              disabled={disabled}>
+              <Icon value="search" />
+            </button>
+            <button
+              className="search-bar__button"
+              disabled={disabled}
+              onClick={handleClickClear}>
+              <Icon value="close" />
+            </button>
+          </div>
         </form>
       </div>
     );
+  }
+
+  clear() {
+    this.setState({ value: '' });
+  }
+
+  focus() {
+    this.input.focus();
   }
 
   handleChange(event) {
@@ -52,6 +70,11 @@ export default class SearchBar extends Component {
   handleSubmit(event) {
     event.preventDefault();
     this.props.onSubmit(this.input.value);
+  }
+
+  handleClickClear() {
+    this.clear();
+    this.focus();
   }
 
 }

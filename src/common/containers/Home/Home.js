@@ -37,7 +37,9 @@ export default class HomePage extends Component {
   }
 
   handleSearchBarSubmit(query) {
-    browserHistory.push(`/search/q/${query}`);
+    const path = query ? `/search/q/${query}` : '/';
+
+    browserHistory.push(path);
   }
 
 }
