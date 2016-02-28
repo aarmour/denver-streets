@@ -80,7 +80,6 @@ class SearchResultsPanel extends Component {
           <NavItem
             name="default"
             icon="home"
-            tooltip="Search"
             active={activeNavItem === 'default'}
             onClick={handleSelectNavItem}
           />
