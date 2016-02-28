@@ -10,23 +10,37 @@ export default class NavItem extends Component {
     this.handleClick = this.handleClick.bind(this);
   }
 
-  render() {
-    const { name, icon, tooltip, active } = this.props;
-    const tooltipId = `nav-item-tooltip-${name}`;
-    const rootClass = classNames({ 'nav-item': true, 'nav-item--active': active });
+  get tooltipId() {
+    return `nav-item-tooltip-${this.props.name}`;
+  }
 
-    return (
-      <div className={rootClass}>
-        <button data-tip data-for={tooltipId} onClick={this.handleClick}>
-          <Icon value={icon} size="lg" />
-        </button>
+  renderTooltip() {
+    const { tooltip } = this.props;
+
+    if (tooltip) {
+      return (
         <Tooltip
-          id={tooltipId}
+          id={this.tooltipId}
           effect="solid"
           place="right"
         >
           <span>{tooltip}</span>
         </Tooltip>
+      );
+    }
+  }
+
+  render() {
+    const { icon, tooltip, active } = this.props;
+    const rootClass = classNames({ 'nav-item': true, 'nav-item--active': active });
+    const tooltipAttrs = tooltip ? { 'data-tip': true, 'data-for': this.tooltipId } : {};
+
+    return (
+      <div className={rootClass}>
+        <button {...tooltipAttrs} onClick={this.handleClick}>
+          <Icon value={icon} size="lg" />
+        </button>
+        {this.renderTooltip()}
       </div>
     );
   }
@@ -43,6 +57,7 @@ export default class NavItem extends Component {
 NavItem.propTypes = {
   active: PropTypes.bool,
   icon: PropTypes.string,
+  tooltip: PropTypes.string,
   onClick: PropTypes.func
 };
 
