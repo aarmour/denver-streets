@@ -9,6 +9,10 @@ export { default as SearchBar } from './SearchBar';
 export { MapGL } from './MapGL';
 export { GeoJSONLayer } from './MapGL';
 
+// Info list
+export { InfoList } from './InfoList';
+export { InfoListItem } from './InfoList';
+
 // Search result
 export { SearchResult } from './SearchResult';
 export { YelpSearchResult } from './SearchResult';

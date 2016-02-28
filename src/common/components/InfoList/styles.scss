@@ -1,0 +1,23 @@
+// InfoList
+// --------
+
+.info-list {
+  padding: 15px;
+}
+
+// InfoListItem
+// ------------
+
+.info-list-item {
+  margin-bottom: 15px;
+}
+
+.info-list-item__title {
+  padding: 8px 15px;
+  background-color: #eeeeee;
+  cursor: pointer;
+
+  h1 {
+    font-size: 0.8em;
+  }
+}
