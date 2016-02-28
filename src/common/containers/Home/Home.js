@@ -1,15 +1,10 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { browserHistory } from 'react-router';
-import { connect } from 'react-redux';
 import IndexPanel from '../IndexPanel';
-import {
-  SearchBar,
-  Panel,
-  MapGL,
-  GeoJSONLayer
-} from '../../components';
+import Map from '../Map';
+import { SearchBar, Panel } from '../../components';
 
-class HomePage extends Component {
+export default class HomePage extends Component {
 
   constructor(props) {
     super(props);
@@ -26,32 +21,8 @@ class HomePage extends Component {
     }
   }
 
-  renderContent() {
-    const { content, map } = this.props;
-    const { query } = this.state;
-
-    if (content) return content;
-
-    const maxBounds = [[-105.27, 39.35], [-104.60, 39.93]];
-
-    const layout = {
-      'icon-image': '{marker-symbol}'
-    };
-
-    const data = map.pois[query] || { type: 'FeatureCollection', features: [] };
-
-    return (
-      <MapGL
-        zoom={map.zoom}
-        center={map.center}
-        maxBounds={maxBounds}
-      >
-        <GeoJSONLayer id="pois" data={data} layout={layout} />
-      </MapGL>
-    );
-  }
-
   render() {
+    const { panel, content } = this.props;
     const { query } = this.state;
 
     return (
@@ -59,8 +30,8 @@ class HomePage extends Component {
         <div className="home-page__search-bar-container">
           <SearchBar onSubmit={this.handleSearchBarSubmit} value={query} />
         </div>
-        <Panel>{this.props.panel || <IndexPanel />}</Panel>
-        <div className="home-page__content">{this.renderContent()}</div>
+        <Panel>{panel || <IndexPanel />}</Panel>
+        <div className="home-page__content">{content || <Map query={query} />}</div>
       </div>
     );
   }
@@ -71,10 +42,7 @@ class HomePage extends Component {
 
 }
 
-function mapStateToProps(state) {
-  return {
-    map: state.map
-  };
-}
-
-export default connect(mapStateToProps)(HomePage);
+HomePage.propTypes = {
+  panel: PropTypes.element,
+  content: PropTypes.element
+};
