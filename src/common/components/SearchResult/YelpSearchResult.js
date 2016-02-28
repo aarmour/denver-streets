@@ -8,6 +8,7 @@ export default class YelpSearchResult extends Component {
   constructor(props) {
     super(props);
     this.state = { expanded: false };
+    this.handleClick = this.handleClick.bind(this);
     this.handleToggleClick = this.handleToggleClick.bind(this);
   }
 
@@ -23,7 +24,7 @@ export default class YelpSearchResult extends Component {
   }
 
   render() {
-    const { classes, handleToggleClick } = this;
+    const { classes, handleClick, handleToggleClick } = this;
     const {
       categories,
       displayPhone,
@@ -43,11 +44,15 @@ export default class YelpSearchResult extends Component {
         <div className="yelp-search-result__primary-attributes">
           <div className="yelp-search-result__media-group">
             <div className="yelp-search-result__media-group__thumbnail">
-              <img src={imageUrl} />
+              <a href="#" onClick={handleClick}>
+                <img src={imageUrl} />
+              </a>
             </div>
-            <div className="yelp-search-result__media-group__content">
+            <div className="yelp-search-result__media-group__content" onClick={handleClick}>
               <div>{name}</div>
-              <div className="text--secondary">{categories.map(category => category[0]).join(', ')}</div>
+              <div className="text--secondary">
+                {categories.map(category => category[0]).join(', ')}
+              </div>
               <div className="yelp-search-result__rating">
                 <Rating
                   readonly={true}
@@ -81,6 +86,18 @@ export default class YelpSearchResult extends Component {
     );
   }
 
+  handleClick(event) {
+    if ((event.target.href || '').match(/^http(s)?/)) return;
+
+    event.preventDefault();
+
+    const { onClick } = this.props;
+
+    if (onClick) {
+      onClick(this.props);
+    }
+  }
+
   handleToggleClick() {
     this.setState({ expanded: !this.state.expanded });
   }
@@ -98,5 +115,6 @@ YelpSearchResult.propTypes = {
   name: PropTypes.string,
   rating: PropTypes.number,
   reviewCount: PropTypes.number,
-  url: PropTypes.string
+  url: PropTypes.string,
+  onClick: PropTypes.func
 };

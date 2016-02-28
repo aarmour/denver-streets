@@ -5,7 +5,8 @@ import IndexPanel from '../IndexPanel';
 import {
   SearchBar,
   Panel,
-  MapGL
+  MapGL,
+  GeoJSONLayer
 } from '../../components';
 
 class HomePage extends Component {
@@ -26,20 +27,27 @@ class HomePage extends Component {
   }
 
   renderContent() {
-    const { content } = this.props;
+    const { content, map } = this.props;
+    const { query } = this.state;
 
     if (content) return content;
 
-    const zoom = 12;
-    const center = [-104.9848, 39.7392];
     const maxBounds = [[-105.27, 39.35], [-104.60, 39.93]];
+
+    const layout = {
+      'icon-image': '{marker-symbol}'
+    };
+
+    const data = map.pois[query] || { type: 'FeatureCollection', features: [] };
 
     return (
       <MapGL
-        zoom={zoom}
-        center={center}
+        zoom={map.zoom}
+        center={map.center}
         maxBounds={maxBounds}
-      />
+      >
+        <GeoJSONLayer id="pois" data={data} layout={layout} />
+      </MapGL>
     );
   }
 
@@ -63,8 +71,10 @@ class HomePage extends Component {
 
 }
 
-function mapStateToProps() {
-  return {};
+function mapStateToProps(state) {
+  return {
+    map: state.map
+  };
 }
 
 export default connect(mapStateToProps)(HomePage);

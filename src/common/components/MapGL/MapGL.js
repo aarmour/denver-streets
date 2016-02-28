@@ -14,20 +14,34 @@ export default class MapGL extends Component {
     this.state = { id: this.props.id };
   }
 
+  getChildContext() {
+    return { map: () => this.map };
+  }
+
   componentDidMount() {
     if (!mapbox) return;
 
     const { Map } = mapbox;
 
-    const map = new Map({
+    this.map = new Map({
       container: this.state.id,
       style: this.props.mapStyle,
       zoom: this.props.zoom,
       center: this.props.center,
       maxBounds: this.props.maxBounds
     });
+  }
 
-    this.setState({ map });
+  componentWillReceiveProps(newProps) {
+    if (!mapbox) return;
+
+    const newState = this.updateStateFromProps(newProps);
+
+    this.setState(newState);
+  }
+
+  componentDidUpdate() {
+    this.updateViewport();
   }
 
   get styles() {
@@ -44,10 +58,31 @@ export default class MapGL extends Component {
     const { id } = this.state;
     const { styles } = this;
 
-    return <div id={id} style={styles.map}></div>;
+    return <div id={id} style={styles.map}>{this.props.children}</div>;
+  }
+
+  updateStateFromProps(props) {
+    const newState = {
+      mapStyle: props.mapStyle,
+      center: props.center,
+      bounds: props.bounds,
+      zoom: props.zoom
+    };
+
+    return newState;
+  }
+
+  updateViewport() {
+    const { center, zoom } = this.state;
+
+    this.map.flyTo({center, zoom});
   }
 
 }
+
+MapGL.childContextTypes = {
+  map: PropTypes.func
+};
 
 MapGL.propTypes = {
   id: PropTypes.string,
@@ -60,6 +95,6 @@ MapGL.propTypes = {
 
 MapGL.defaultProps = {
   id: 'map',
-  mapStyle: 'mapbox://styles/mapbox/emerald-v8',
+  mapStyle: 'mapbox://styles/aarmour/cil5be3x0009aaam4qqkhngv1',
   fillHeight: true
 };

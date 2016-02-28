@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { loadSearchResults, loadYelpSearchResults } from '../../actions/search';
+import { centerMap } from '../../actions/map';
 import {
   List,
   NavItem,
@@ -19,6 +20,7 @@ class SearchResultsPanel extends Component {
     this.handleSelectPrevPage = this.handleSelectPrevPage.bind(this);
     this.handleSelectNextPage = this.handleSelectNextPage.bind(this);
     this.handleSelectNavItem = this.handleSelectNavItem.bind(this);
+    this.handleClickYelpSearchResult = this.handleClickYelpSearchResult.bind(this);
   }
 
   componentDidMount() {
@@ -62,11 +64,11 @@ class SearchResultsPanel extends Component {
       if (activeNavItem === 'yelp') {
         const { businesses } = resultsForPage;
 
-        listItems = businesses.map(this.renderYelpSearchResult);
+        listItems = businesses.map(this.renderYelpSearchResult.bind(this));
       } else {
         const { results } = searchResults[selectedPage] || {};
 
-        listItems = results.map(this.renderSearchResult);
+        listItems = results.map(this.renderSearchResult.bind(this));
       }
 
       content = <List items={listItems} key="slug" />;
@@ -119,7 +121,7 @@ class SearchResultsPanel extends Component {
   }
 
   renderYelpSearchResult(searchResult) {
-    return <YelpSearchResult {...searchResult} />;
+    return <YelpSearchResult {...searchResult} onClick={this.handleClickYelpSearchResult} />;
   }
 
   render() {
@@ -169,12 +171,20 @@ class SearchResultsPanel extends Component {
       () => this.loadSearchResultsForActiveNavItem());
   }
 
+  handleClickYelpSearchResult(result) {
+    const yelpCoordinates = result.location.coordinate;
+    const mapCoordinates = [yelpCoordinates.longitude, yelpCoordinates.latitude];
+
+    this.props.centerMap(mapCoordinates);
+  }
+
 }
 
 SearchResultsPanel.propTypes = {
   searchResults: PropTypes.object,
   loadSearchResults: PropTypes.func.isRequired,
-  loadYelpSearchResults: PropTypes.func.isRequired
+  loadYelpSearchResults: PropTypes.func.isRequired,
+  centerMap: PropTypes.func.isRequired
 };
 
 SearchResultsPanel.defaultProps = {
@@ -190,5 +200,6 @@ function mapStateToProps(state, ownProps) {
 
 export default connect(mapStateToProps, {
   loadSearchResults,
-  loadYelpSearchResults
+  loadYelpSearchResults,
+  centerMap
 })(SearchResultsPanel);

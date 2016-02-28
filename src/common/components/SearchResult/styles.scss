@@ -27,7 +27,7 @@
 .yelp-search-result__media-group__thumbnail {
   margin-right: 10px;
 
-  > img {
+  img {
     width: 65px;
     border-radius: 4px;
   }
@@ -36,6 +36,7 @@
 .yelp-search-result__media-group__content {
   flex: 1;
   line-height: 1.4em;
+  cursor: pointer;
 }
 
 .yelp-search-result__rating {

@@ -2,6 +2,7 @@ import { combineReducers } from 'redux';
 import * as SearchActionTypes from '../actions/search';
 import entities from './entities';
 import paginate from './paginate';
+import map from './map';
 
 const pagination = combineReducers({
 
@@ -27,7 +28,8 @@ const pagination = combineReducers({
 
 const rootReducer = combineReducers({
   entities,
-  pagination
+  pagination,
+  map
 });
 
 export default rootReducer;
