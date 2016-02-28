@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { loadSearchResults, loadYelpSearchResults } from '../../actions/search';
 import { centerMap } from '../../actions/map';
+import BasePanel from '../BasePanel';
 import {
   List,
   NavItem,
@@ -126,15 +127,14 @@ class SearchResultsPanel extends Component {
   render() {
 
     return (
-      <div className="search-results-panel">
-        <div className="search-results-panel__search-bar-spacer"></div>
+      <BasePanel>
         <div className="search-results-panel__content">
           {this.renderContent()}
         </div>
         <div className="search-results-panel__footer">
           {this.renderFooter()}
         </div>
-      </div>
+      </BasePanel>
     );
   }
 
