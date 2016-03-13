@@ -2,9 +2,11 @@ import { canUseDOM } from 'exenv';
 import React, { Component, PropTypes } from 'react';
 
 let mapbox;
+let LocationControl;
 
 if (canUseDOM) {
   mapbox = require('mapbox-gl');
+  LocationControl = require('./mapbox-plugins/control/location');
 }
 
 export default class MapGL extends Component {
@@ -21,15 +23,20 @@ export default class MapGL extends Component {
   componentDidMount() {
     if (!mapbox) return;
 
-    const { Map } = mapbox;
+    const { Map, Navigation } = mapbox;
 
-    this.map = new Map({
+    const map = new Map({
       container: this.state.id,
       style: this.props.mapStyle,
       zoom: this.props.zoom,
       center: this.props.center,
       maxBounds: this.props.maxBounds
     });
+
+    map.addControl(new Navigation());
+    map.addControl(new LocationControl());
+
+    this.map = map;
   }
 
   componentWillReceiveProps(newProps) {
