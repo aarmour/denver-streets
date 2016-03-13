@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { loadSearchResults, loadYelpSearchResults } from '../../actions/search';
+import { loadSearchResults } from '../../actions/search';
 import { centerMap } from '../../actions/map';
 import BasePanel from '../BasePanel';
 import {
@@ -18,14 +18,24 @@ class SearchResultsPanel extends Component {
   constructor(props) {
     super(props);
     this.state = { activeNavItem: 'default' };
-    this.handleSelectPrevPage = this.handleSelectPrevPage.bind(this);
-    this.handleSelectNextPage = this.handleSelectNextPage.bind(this);
     this.handleSelectNavItem = this.handleSelectNavItem.bind(this);
     this.handleClickYelpSearchResult = this.handleClickYelpSearchResult.bind(this);
   }
 
+  get provider() {
+    return this.state.activeNavItem;
+  }
+
+  get searchResultsForPage() {
+    return this.props.searchResults[this.state.activeNavItem];
+  }
+
+  get query() {
+    return this.props.params.query;
+  }
+
   componentDidMount() {
-    this.loadSearchResultsForActiveNavItem();
+    this.props.loadSearchResults(this.query, this.provider);
   }
 
   componentDidUpdate(prevProps) {
@@ -33,7 +43,7 @@ class SearchResultsPanel extends Component {
     const newQuery = this.props.params.query;
 
     if (newQuery !== oldQuery) {
-      this.loadSearchResultsForActiveNavItem();
+      this.props.loadSearchResults(newQuery, this.provider);
     }
   }
 
@@ -41,38 +51,37 @@ class SearchResultsPanel extends Component {
     const { handleSelectNavItem } = this;
     const { activeNavItem } = this.state;
 
-    let searchResults = activeNavItem === 'yelp' ?
-      this.props.yelpSearchResults : this.props.searchResults;
+    if (!this.props.searchResults[this.provider]) return;
 
-    if (!searchResults) return;
-
-    const { isFetching, selectedPage } = searchResults;
-    const resultsForPage = searchResults[selectedPage] || {};
-    const { total } = resultsForPage;
+    const searchResults = this.props.searchResults[this.provider];
     let content;
 
-    if (isFetching) {
+    if (searchResults.isFetching) {
       content = (
         <div className="search-results-panel__progress-indicator">
           <ProgressIndicator />
         </div>
       );
-    } else if (!total) {
-      content = <div className="search-results-panel__empty">No results</div>;
     } else {
-      let listItems;
+      const searchResultsForPage = searchResults[searchResults.selectedPage];
 
-      if (activeNavItem === 'yelp') {
-        const { businesses } = resultsForPage;
-
-        listItems = businesses.map(this.renderYelpSearchResult.bind(this));
+      if (!searchResultsForPage.total) {
+        content = <div className="search-results-panel__empty">No results</div>;
       } else {
-        const { results } = searchResults[selectedPage] || {};
+        let listItems;
 
-        listItems = results.map(this.renderSearchResult.bind(this));
+        if (activeNavItem === 'yelp') {
+          const { businesses } = searchResultsForPage;
+
+          listItems = businesses.map(this.renderYelpSearchResult.bind(this));
+        } else {
+          const { results } = searchResultsForPage;
+
+          listItems = results.map(this.renderSearchResult.bind(this));
+        }
+
+        content = <List items={listItems} key="slug" />;
       }
-
-      content = <List items={listItems} key="slug" />;
     }
 
     return (
@@ -100,9 +109,12 @@ class SearchResultsPanel extends Component {
   }
 
   renderFooter() {
-    const { handleSelectPrevPage, handleSelectNextPage } = this;
-    const { searchResults } = this.props;
-    const { prevPageUrl, nextPageUrl } = searchResults;
+    const { searchResultsForPage } = this;
+    const { loadSearchResults } = this.props;
+
+    if (!searchResultsForPage) return;
+
+    const { prevPageUrl, nextPageUrl } = searchResultsForPage;
     const hasPrev = !!prevPageUrl;
     const hasNext = !!nextPageUrl;
 
@@ -110,8 +122,8 @@ class SearchResultsPanel extends Component {
       <Pagination
         hasPrev={hasPrev}
         hasNext={hasNext}
-        onSelectPrev={handleSelectPrevPage}
-        onSelectNext={handleSelectNextPage}
+        onSelectPrev={loadSearchResults.bind(null, this.query, this.provider, prevPageUrl)}
+        onSelectNext={loadSearchResults.bind(null, this.query, this.provider, nextPageUrl)}
       />
     );
   }
@@ -138,36 +150,13 @@ class SearchResultsPanel extends Component {
     );
   }
 
-  loadSearchResultsForActiveNavItem() {
-    const { activeNavItem } = this.state;
-    const { query } = this.props.params;
-
-    if (activeNavItem === 'yelp') {
-      this.props.loadYelpSearchResults(query);
-    } else {
-      this.props.loadSearchResults(query);
-    }
-  }
-
-  handleSelectPrevPage() {
-    const { query } = this.props.params;
-    const { searchResults, loadSearchResults } = this.props;
-    const { prevPageUrl } = searchResults;
-
-    loadSearchResults(query, prevPageUrl);
-  }
-
-  handleSelectNextPage() {
-    const { query } = this.props.params;
-    const { searchResults, loadSearchResults } = this.props;
-    const { nextPageUrl } = searchResults;
-
-    loadSearchResults(query, nextPageUrl);
-  }
-
   handleSelectNavItem(name) {
-    this.setState({ activeNavItem: name },
-      () => this.loadSearchResultsForActiveNavItem());
+    this.setState({ activeNavItem: name }, () => {
+      const provider = this.state.activeNavItem;
+      const { query } = this.props.params;
+
+      this.props.loadSearchResults(query, provider);
+    });
   }
 
   handleClickYelpSearchResult(result) {
@@ -190,15 +179,13 @@ SearchResultsPanel.defaultProps = {
   searchResults: {}
 };
 
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state) {
   return {
-    searchResults: state.pagination.searchResults[ownProps.params.query],
-    yelpSearchResults: state.pagination.yelpSearchResults[ownProps.params.query]
+    searchResults: state.pagination.searchResults
   };
 }
 
 export default connect(mapStateToProps, {
   loadSearchResults,
-  loadYelpSearchResults,
   centerMap
 })(SearchResultsPanel);

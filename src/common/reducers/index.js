@@ -7,20 +7,11 @@ import map from './map';
 const pagination = combineReducers({
 
   searchResults: paginate({
-    mapActionToKey: action => action.query,
+    mapActionToKey: action => action.provider,
     types: [
       SearchActionTypes.SEARCH_REQUEST,
       SearchActionTypes.SEARCH_SUCCESS,
       SearchActionTypes.SEARCH_FAILURE
-    ]
-  }),
-
-  yelpSearchResults: paginate({
-    mapActionToKey: action => action.query,
-    types: [
-      SearchActionTypes.YELP_SEARCH_REQUEST,
-      SearchActionTypes.YELP_SEARCH_SUCCESS,
-      SearchActionTypes.YELP_SEARCH_FAILURE
     ]
   })
 

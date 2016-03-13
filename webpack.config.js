@@ -3,9 +3,7 @@ const webpack = require('webpack');
 
 module.exports = {
 
-  debug: true,
-
-  devtool: 'inline-source-map',
+  devtool: 'source-map',
 
   entry: [
     'webpack-hot-middleware/client?path=/__webpack_hmr',

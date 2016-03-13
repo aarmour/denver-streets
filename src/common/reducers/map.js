@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import uniqueBy from 'lodash.uniqby';
 import { CENTER_MAP } from '../actions/map';
-import { SEARCH_SUCCESS, YELP_SEARCH_SUCCESS } from '../actions/search';
+import { SEARCH_SUCCESS } from '../actions/search';
 
 const DEFAULT_MAP_CENTER = [-104.9848, 39.7392];
 const DEFAULT_MAP_ZOOM = 12;
@@ -24,7 +24,7 @@ function zoom(state = DEFAULT_MAP_ZOOM, action) {
 
 function pois(state = {}, action) {
 
-  if (action.type === SEARCH_SUCCESS) {
+  if (action.type === SEARCH_SUCCESS && action.provider === 'default') {
     const { query } = action;
     const features = (state[query] || {}).features || [];
     const { results } = action.response;
@@ -34,7 +34,7 @@ function pois(state = {}, action) {
     return { [query]: Object.assign({ type: 'FeatureCollection' }, { features: newFeatures }) };
   }
 
-  if (action.type === YELP_SEARCH_SUCCESS) {
+  if (action.type === SEARCH_SUCCESS && action.provider === 'yelp') {
     const { query } = action;
     const features = (state[query] || {}).features || [];
     const { businesses } = action.response;
