@@ -2,10 +2,12 @@ import { canUseDOM } from 'exenv';
 import React, { Component, PropTypes } from 'react';
 
 let mapbox;
+let AccountControl;
 let LocationControl;
 
 if (canUseDOM) {
   mapbox = require('mapbox-gl');
+  AccountControl = require('./mapbox-plugins/control/account');
   LocationControl = require('./mapbox-plugins/control/location');
 }
 
@@ -33,6 +35,7 @@ export default class MapGL extends Component {
       maxBounds: this.props.maxBounds
     });
 
+    map.addControl(new AccountControl());
     map.addControl(new Navigation());
     map.addControl(new LocationControl());
 

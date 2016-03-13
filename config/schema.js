@@ -34,6 +34,29 @@ module.exports = {
     }
   },
 
+  accounts: {
+    clientId: {
+      documentation: 'Auth0 client ID.',
+      format: String,
+      env: 'ACCOUNTS_CLIENT_ID',
+      default: '80sQnIfh4ujgVixlgAXkgNHqJX7GnkzE'
+    },
+
+    clientSecret: {
+      documentation: 'Auth0 client secret.',
+      format: String,
+      env: 'ACCOUNTS_CLIENT_SECRET',
+      default: ''
+    },
+
+    domain: {
+      documentation: 'Auth0 domain.',
+      format: String,
+      env: 'ACCOUNTS_DOMAIN',
+      default: 'denverite.auth0.com'
+    }
+  },
+
   elasticsearch: {
     host: {
       documentation: 'Elasticsearch host.',

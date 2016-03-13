@@ -45,6 +45,10 @@ server.register([
   {
     register: require('./views'),
     options: {
+      accounts: {
+        clientId: config.accounts.clientId,
+        domain: config.accounts.domain
+      },
       mapbox: config.mapbox
     }
   }

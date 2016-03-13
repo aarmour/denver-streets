@@ -8,7 +8,7 @@ register.attributes = {
 };
 
 function register(server, options, next) {
-  server.bind({ mapbox: options.mapbox });
+  server.bind({ accounts: options.accounts, mapbox: options.mapbox });
 
   server.route({
     method: 'GET',

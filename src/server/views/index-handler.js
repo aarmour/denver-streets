@@ -10,7 +10,7 @@ module.exports = indexHandler;
 
 function indexHandler(request, reply) {
   const store = configureStore();
-  const { mapbox } = this;
+  const { accounts, mapbox } = this;
 
   match({ routes, location: request.url }, (error, redirectLocation, renderProps) => {
     if (error) return reply(error);
@@ -24,7 +24,7 @@ function indexHandler(request, reply) {
 
     const initialState = store.getState();
 
-    return reply(renderFullPage(html, { mapbox, initialState }));
+    return reply(renderFullPage(html, { accounts, mapbox, initialState }));
   });
 }
 
@@ -36,6 +36,8 @@ function renderFullPage(html, data) {
         <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
         <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
 
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
         <style>
           ${styles.inline}
         </style>
@@ -45,9 +47,11 @@ function renderFullPage(html, data) {
       <body>
         <div id="app">${html}</div>
         <script>
+          window.__ACCOUNTS__ = ${JSON.stringify(data.accounts)};
           window.__MAPBOX__ = ${JSON.stringify(data.mapbox)};
           window.__INITIAL_STATE__ = ${JSON.stringify(data.initialState)};
         </script>
+        <script src="//cdn.auth0.com/js/lock-8.2.min.js"></script>
         <script src="/static/bundle.js"></script>
       </body>
     </html>
