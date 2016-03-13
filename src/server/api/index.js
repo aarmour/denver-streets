@@ -10,6 +10,11 @@ register.attributes = {
 function register(server, options, next) {
   server.register([
     {
+      register: require('./user'),
+      options: { mapbox: options.mapbox }
+    },
+
+    {
       register: require('./search'),
       options: { client: options.search.client }
     },

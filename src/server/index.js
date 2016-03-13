@@ -36,11 +36,12 @@ server.register([
     options: {
       search: { client: require('./elasticsearch') },
       yelp: config.yelp,
+      mapbox: config.mapbox,
       routes: { prefix: '/api' }
     }
   },
 
-  // views
+  // Views
   {
     register: require('./views'),
     options: {
